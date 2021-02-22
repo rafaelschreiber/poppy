@@ -1,8 +1,8 @@
 # uncomment as necessary
-project('PROJNAME', 'cpp',
+project('pop3client_29', 'cpp',
         license : ['Boost'],
         version : '0.1',
-        default_options : ['cpp_std=c++17', 'warning_level=3', 'werror=true'])
+        default_options : ['cpp_std=c++17', 'warning_level=3', 'werror=false'])
 
 # thread_dep = dependency('threads')
 
@@ -42,7 +42,7 @@ inc_dir = include_directories('include')
 src = ['src/main.cpp']
 #protobuf: src = ['src/main.cpp', generated]
 
-executable('EXENAME',
+executable('pop3client',
            sources : src,
            include_directories : inc_dir,
 #           dependencies : [thread_dep, protobuf_dep]
