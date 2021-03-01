@@ -1,5 +1,5 @@
 * Changelog
-** [Unreleased]
+** [0.2] - 2021-03-01
 *** Added
 - Implement SSL/TLS handshake with GnuTLS & BSD socket API
 - Automatic name resolution and differentiation between IPv4/6
