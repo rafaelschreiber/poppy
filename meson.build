@@ -1,7 +1,7 @@
 # uncomment as necessary
 project('pop3client_29', 'cpp',
         license : ['Boost'],
-        version : '0.2',
+        version : '0.3',
         default_options : ['cpp_std=c++17', 'warning_level=3', 'werror=false'])
 
 # thread_dep = dependency('threads')
