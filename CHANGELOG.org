@@ -1,5 +1,12 @@
 * Changelog
 ** [Unreleased]
+*** Added
+- Implement SSL/TLS handshake with GnuTLS & BSD socket API
+- Automatic name resolution and differentiation between IPv4/6
+- Error handling concept
+- Add class Pop3socket() providing an easy-to-use interface within the application
+- Differentiation between unencrypted and encrypted connections
+- Repo cleanup
 
 ** [0.1] - 2021-02-22
 *** Added
