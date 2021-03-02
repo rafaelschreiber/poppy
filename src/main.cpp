@@ -13,7 +13,9 @@ using namespace std;
 
 //int main(int argc, char* argv[]) {
 int main() {
-    Pop3socket pop3sess = Pop3socket("mail.privateemail.com", 110, false);
-    cout << pop3sess.connect() << endl;
+    Pop3socket pop3sess = Pop3socket("mail.mailserver.com", 995, true);
+    pop3sess.switch_debug();
+    pop3sess.connect();
+    pop3sess.login("user@domain.com", "topsecret");
     return 0;
 }

@@ -74,8 +74,6 @@ int Pop3socket::_setup_gnutls() {
 }
 
 int Pop3socket::connect() {
-    char buf[1025]{};
-
     int ret_resolv = _resolve_name();
     if(ret_resolv != 0){ return ret_resolv; }
 
@@ -88,10 +86,32 @@ int Pop3socket::connect() {
     }
 
     if(_recv().substr(0, 3) == "+OK"){
+        _session_up = true;
         return SUCCESS;
     } else {
         return PROTOCOL_ERR;
     }
+}
+
+int Pop3socket::login(string username, string password) {
+    if(!_session_up){ return NOT_CONNECTED_ERR; }
+    if(_is_logged_in){ return ALREADY_LOGGED_IN_ERR; }
+    _send("USER " + username);
+    if(_recv().substr(0, 3) == "-ERR") { return PROTOCOL_ERR; }
+    _send("PASS " + password);
+    string auth_response = _recv();
+    if(auth_response.substr(0, 3) == "+OK"){
+        _is_logged_in = true;
+        return SUCCESS;
+    } else if (auth_response.substr(0, 11) == "-ERR [AUTH]"){
+        return WRONG_CREDENTIALS_ERR;
+    } else {
+        return PROTOCOL_ERR;
+    }
+}
+
+void Pop3socket::switch_debug() {
+    _debug_on = _debug_on ? false : true;
 }
 
 string Pop3socket::_recv(){
@@ -102,8 +122,24 @@ string Pop3socket::_recv(){
         recv(_socket_descriptor, buf, sizeof(buf) - 1, 0);
     }
     string ret_recv = buf;
+    if (_debug_on) { cout << "recv: " << ret_recv << endl; }
     return ret_recv;
 
+}
+
+int Pop3socket::_send(string msg){
+    msg += "\r\n";
+    const char *data = msg.c_str();
+    if (_debug_on) { cout << "send: " << msg << endl; }
+    unsigned int strlen = msg.length();
+    int status{};
+    if(_is_encrypted){
+        status = gnutls_record_send(_sess, data, strlen);
+    } else {
+        status = send(_socket_descriptor, data, strlen, 0);
+    }
+    if(status >= 0){ return SUCCESS; }
+    return SEND_ERR;
 }
 
 Pop3socket::~Pop3socket() {

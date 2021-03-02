@@ -18,6 +18,10 @@
 #define SOCKET_ERR 2
 #define TLS_HANDSHAKE_ERR 3
 #define PROTOCOL_ERR 4
+#define SEND_ERR 5
+#define NOT_CONNECTED_ERR 6
+#define ALREADY_LOGGED_IN_ERR 7
+#define WRONG_CREDENTIALS_ERR 8
 
 using namespace std;
 
@@ -31,6 +35,8 @@ private:
     struct sockaddr_in _socket_address;
     bool _is_encrypted{};
     bool _session_up{false};
+    bool _is_logged_in{false};
+    bool _debug_on{false};
     gnutls_session_t _sess{};
     gnutls_certificate_credentials_t _xcred{};
 
@@ -39,10 +45,13 @@ private:
     int _setup_gnutls();
     int _recv_server_ok();
     string _recv();
+    int _send(string msg);
 
 public:
     Pop3socket(string hostname, uint16_t port, bool is_encrypted);
     int connect();
+    void switch_debug();
+    int login(string username, string password);
     ~Pop3socket();
 };
 
