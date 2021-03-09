@@ -7,15 +7,12 @@
 
 #include <iostream>
 #include <string>
-#include "pop3socket.h"
+#include "mailbox.h"
 
 using namespace std;
 
 //int main(int argc, char* argv[]) {
 int main() {
-    Pop3socket pop3sess = Pop3socket("mail.mailserver.com", 995, true);
-    pop3sess.switch_debug();
-    pop3sess.connect();
-    pop3sess.login("user@domain.com", "topsecret");
+    Mailbox pop3mailbox = Mailbox("frontend.backend.works", 995, "mailtest", "abc123", true);
     return 0;
 }

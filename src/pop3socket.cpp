@@ -20,7 +20,15 @@
 
 using namespace std;
 
+Pop3socket::Pop3socket() {}
+
 Pop3socket::Pop3socket(std::string hostname, uint16_t port, bool is_encrypted) {
+    _hostname = hostname;
+    _port = port;
+    _is_encrypted = is_encrypted;
+}
+
+void Pop3socket::fill_endpoint(string hostname, uint16_t port, bool is_encrypted) {
     _hostname = hostname;
     _port = port;
     _is_encrypted = is_encrypted;
@@ -68,7 +76,7 @@ int Pop3socket::_setup_gnutls() {
     gnutls_handshake_set_timeout(_sess, GNUTLS_DEFAULT_HANDSHAKE_TIMEOUT);
 
     int err_handshake = gnutls_handshake(_sess);
-    cout << gnutls_session_get_desc(_sess) << endl;
+    if (_debug_on) { cout << gnutls_session_get_desc(_sess) << endl; }
     int ret = (err_handshake == 0) ? SUCCESS : TLS_HANDSHAKE_ERR;
     return ret;
 }
@@ -104,6 +112,7 @@ int Pop3socket::login(string username, string password) {
         _is_logged_in = true;
         return SUCCESS;
     } else if (auth_response.substr(0, 11) == "-ERR [AUTH]"){
+        cout << "here" << endl;
         return WRONG_CREDENTIALS_ERR;
     } else {
         return PROTOCOL_ERR;
@@ -116,10 +125,13 @@ void Pop3socket::switch_debug() {
 
 string Pop3socket::_recv(){
     char buf[8193]{};
-    if(_is_encrypted){
-        gnutls_record_recv(_sess, buf, sizeof(buf) - 1);
-    } else {
-        recv(_socket_descriptor, buf, sizeof(buf) - 1, 0);
+    while (true) {
+        if (_is_encrypted) {
+            gnutls_record_recv(_sess, buf, sizeof(buf) - 1);
+        } else {
+            recv(_socket_descriptor, buf, sizeof(buf) - 1, 0);
+        }
+        if (strlen(buf) != 0){ break; }
     }
     string ret_recv = buf;
     if (_debug_on) { cout << "recv: " << ret_recv << endl; }

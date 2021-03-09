@@ -48,7 +48,9 @@ private:
     int _send(string msg);
 
 public:
+    Pop3socket();
     Pop3socket(string hostname, uint16_t port, bool is_encrypted);
+    void fill_endpoint(string hostname, uint16_t port, bool is_encrypted);
     int connect();
     void switch_debug();
     int login(string username, string password);
