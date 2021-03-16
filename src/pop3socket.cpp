@@ -9,6 +9,7 @@
 #include <string>
 #include <cstring>
 #include <unistd.h>
+#include <vector>
 
 #include <arpa/inet.h>
 #include <sys/socket.h>
@@ -16,6 +17,7 @@
 #include <netdb.h>
 
 #include <gnutls/gnutls.h>
+#include "pystring.h"
 
 #include "pop3socket.h"
 
@@ -122,6 +124,34 @@ int Pop3socket::login(string username, string password) {
 
 void Pop3socket::switch_debug() {
     _debug_on = _debug_on ? false : true;
+}
+
+bool Pop3socket::ping(){
+    if(!_session_up){ return NOT_CONNECTED_ERR; }
+    if(!_is_logged_in){ return NOT_LOGGED_IN_ERR; }
+    _send("NOOP");
+    string noop_response = _recv();
+    if(noop_response.substr(0, 3) == "+OK"){
+        return true;
+    } else {
+        return false;
+    }
+}
+
+int Pop3socket::get_stats(stat_t *status){
+    if(!_session_up){ return NOT_CONNECTED_ERR; }
+    if(!_is_logged_in){ return NOT_LOGGED_IN_ERR; }
+    _send("STAT");
+    string stat_response = _recv();
+    if(stat_response.substr(0, 3) != "+OK"){
+        return PROTOCOL_ERR;
+    } else {
+        vector<string> stat_data;
+        pystring::split(stat_response, stat_data, " ");
+        status->mails = stoi(stat_data.at(1));
+        status->bytes = stoi(stat_data.at(2));
+        return SUCCESS;
+    }
 }
 
 string Pop3socket::_recv(){

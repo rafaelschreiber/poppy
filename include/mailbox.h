@@ -17,10 +17,12 @@ using namespace std;
 
 class Mailbox {
 private:
-    Pop3socket pop3sess{};
+    
 
 public:
+    Pop3socket pop3sess{};
     Mailbox(string hostname, uint16_t port, string user, string pass, bool encrypted);
+
 };
 
 #endif // MAILBOX_H

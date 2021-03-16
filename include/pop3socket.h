@@ -22,8 +22,22 @@
 #define NOT_CONNECTED_ERR 6
 #define ALREADY_LOGGED_IN_ERR 7
 #define WRONG_CREDENTIALS_ERR 8
+#define NOT_LOGGED_IN_ERR 9
 
 using namespace std;
+
+
+struct mail_t{
+    string uidl;
+    string sender;
+    string subject;
+    unsigned int id;
+};
+
+struct stat_t{
+    unsigned int mails;
+    unsigned int bytes;
+};
 
 class Pop3socket {
 private:
@@ -54,6 +68,8 @@ public:
     int connect();
     void switch_debug();
     int login(string username, string password);
+    bool ping();
+    int get_stats(stat_t *status);
     ~Pop3socket();
 };
 
