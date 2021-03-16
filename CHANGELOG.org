@@ -1,4 +1,7 @@
 * Changelog
+** [Unreleased]
+*** Added
+
 ** [0.3] - 2021-03-16
 *** Added
 - Basic login method with username and password
