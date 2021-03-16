@@ -1,7 +1,10 @@
 * Changelog
-** [Unreleased]
+** [0.3] - 2021-03-16
 *** Added
-- Add basic login method
+- Basic login method with username and password
+- New mailbox class for more abstraction
+- Ping server
+- Get server status
 
 ** [0.2] - 2021-03-01
 *** Added
