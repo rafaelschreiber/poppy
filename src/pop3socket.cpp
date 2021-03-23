@@ -10,6 +10,7 @@
 #include <cstring>
 #include <unistd.h>
 #include <vector>
+#include <map>
 
 #include <arpa/inet.h>
 #include <sys/socket.h>
@@ -138,20 +139,70 @@ bool Pop3socket::ping(){
     }
 }
 
+int Pop3socket::get_mails(vector<mail_t> &mails){
+    if(!_session_up){ return NOT_CONNECTED_ERR; }
+    if(!_is_logged_in){ return NOT_LOGGED_IN_ERR; }
+    _send("LIST");
+    string list_response = _recv();
+    if(list_response.substr(0, 3) != "+OK"){ return PROTOCOL_ERR; }
+    vector<string> list_rows;
+    vector<string> list_row_data;
+    pystring::split(list_response, list_rows, "\n");
+    list_rows.erase(list_rows.begin());
+    for(string list_row : list_rows){
+        list_row_data.clear();
+
+        if (list_row.substr(0, 1) == ".") { break; }
+
+        pystring::split(list_row, list_row_data, " ");
+
+        map<string, string> headers = _get_header(stoi(list_row_data.at(0)));  
+        mail_t new_mail(stoi(list_row_data.at(0)), stoi(list_row_data.at(1)), " ", headers);
+        mails.push_back(new_mail);
+    }
+
+    return SUCCESS;
+}
+
+map<string, string> Pop3socket::_get_header(uint16_t mailid){
+    _send("TOP " + to_string(mailid) + " 0");
+    string headers_response = _recv();
+    map<string, string> headers;
+    vector<string> headers_rows;
+    pystring::split(headers_response, headers_rows, "\r\n");
+    headers_rows.erase(headers_rows.begin());
+
+    string key;
+    string val;
+    for (string headers_row : headers_rows){
+        if (headers_row.length() == 0) { break; }
+        key.clear();
+        val.clear();
+
+        for(char c : headers_row){
+            if(c == ':'){ break; }
+            key += c;
+        }
+
+        val = headers_row.substr(key.length() + 2, string::npos);
+        headers[key] = val;
+    }
+
+    return headers;
+}
+
+
 int Pop3socket::get_stats(stat_t *status){
     if(!_session_up){ return NOT_CONNECTED_ERR; }
     if(!_is_logged_in){ return NOT_LOGGED_IN_ERR; }
     _send("STAT");
     string stat_response = _recv();
-    if(stat_response.substr(0, 3) != "+OK"){
-        return PROTOCOL_ERR;
-    } else {
-        vector<string> stat_data;
-        pystring::split(stat_response, stat_data, " ");
-        status->mails = stoi(stat_data.at(1));
-        status->bytes = stoi(stat_data.at(2));
-        return SUCCESS;
-    }
+    if(stat_response.substr(0, 3) != "+OK") { return PROTOCOL_ERR; }
+    vector<string> stat_data;
+    pystring::split(stat_response, stat_data, " ");
+    status->mails = stoi(stat_data.at(1));
+    status->bytes = stoi(stat_data.at(2));
+    return SUCCESS;
 }
 
 string Pop3socket::_recv(){

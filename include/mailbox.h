@@ -8,7 +8,7 @@
 #ifndef MAILBOX_H
 #define MAILBOX_H
 
-#define DEBUG true
+#define DEBUG false
 
 #include <string>
 #include "pop3socket.h"

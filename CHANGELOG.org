@@ -1,6 +1,8 @@
 * Changelog
 ** [Unreleased]
 *** Added
+- Methods to list and retrieve metadata of all mails
+- Special data type mail_t representing a mail
 
 ** [0.3] - 2021-03-16
 *** Added
