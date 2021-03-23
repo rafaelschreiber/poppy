@@ -116,7 +116,6 @@ int Pop3socket::login(string username, string password) {
         _is_logged_in = true;
         return SUCCESS;
     } else if (auth_response.substr(0, 11) == "-ERR [AUTH]"){
-        cout << "here" << endl;
         return WRONG_CREDENTIALS_ERR;
     } else {
         return PROTOCOL_ERR;
@@ -124,7 +123,7 @@ int Pop3socket::login(string username, string password) {
 }
 
 void Pop3socket::switch_debug() {
-    _debug_on = _debug_on ? false : true;
+    _debug_on = !_debug_on;
 }
 
 bool Pop3socket::ping(){
@@ -143,7 +142,7 @@ int Pop3socket::get_mails(vector<mail_t> &mails){
     if(!_session_up){ return NOT_CONNECTED_ERR; }
     if(!_is_logged_in){ return NOT_LOGGED_IN_ERR; }
     _send("LIST");
-    string list_response = _recv();
+    string list_response = _recv_to_end();
     if(list_response.substr(0, 3) != "+OK"){ return PROTOCOL_ERR; }
     vector<string> list_rows;
     vector<string> list_row_data;
@@ -157,7 +156,8 @@ int Pop3socket::get_mails(vector<mail_t> &mails){
         pystring::split(list_row, list_row_data, " ");
 
         map<string, string> headers = _get_header(stoi(list_row_data.at(0)));  
-        mail_t new_mail(stoi(list_row_data.at(0)), stoi(list_row_data.at(1)), " ", headers);
+        mail_t new_mail(stoi(list_row_data.at(0)), stoi(list_row_data.at(1)),
+                        _get_uidl(stoi(list_row_data.at(0))), headers);
         mails.push_back(new_mail);
     }
 
@@ -166,16 +166,19 @@ int Pop3socket::get_mails(vector<mail_t> &mails){
 
 map<string, string> Pop3socket::_get_header(uint16_t mailid){
     _send("TOP " + to_string(mailid) + " 0");
-    string headers_response = _recv();
+    string headers_response = _recv_to_end();
     map<string, string> headers;
     vector<string> headers_rows;
     pystring::split(headers_response, headers_rows, "\r\n");
     headers_rows.erase(headers_rows.begin());
 
     string key;
+    string prev_key;
     string val;
     for (string headers_row : headers_rows){
         if (headers_row.length() == 0) { break; }
+
+        prev_key = key;
         key.clear();
         val.clear();
 
@@ -184,13 +187,27 @@ map<string, string> Pop3socket::_get_header(uint16_t mailid){
             key += c;
         }
 
-        val = headers_row.substr(key.length() + 2, string::npos);
+        try {
+            val = headers_row.substr(key.length() + 2, string::npos);
+        } catch (const std::out_of_range& oor_err){
+            headers[prev_key] += headers_row;
+            key = prev_key;
+            continue;
+        }
+
         headers[key] = val;
     }
 
     return headers;
 }
 
+string Pop3socket::_get_uidl(uint16_t mailid) {
+    _send("UIDL " + to_string(mailid));
+    string uidl_response = _recv();
+    vector<string> uidl_data;
+    pystring::split(uidl_response, uidl_data, " ");
+    return uidl_data.at(2);
+}
 
 int Pop3socket::get_stats(stat_t *status){
     if(!_session_up){ return NOT_CONNECTED_ERR; }
@@ -205,8 +222,36 @@ int Pop3socket::get_stats(stat_t *status){
     return SUCCESS;
 }
 
+inline bool ends_with(std::string const & value, std::string const & ending) {
+    if (ending.size() > value.size()) return false;
+    return std::equal(ending.rbegin(), ending.rend(), value.rbegin());
+}
+
+string Pop3socket::_recv_to_end(){
+    char buf[512]{};
+
+    string key = ".\r\n";
+    string full_recv = "";
+    string seg = "";
+
+    while(!ends_with(seg, key)){
+        if(_is_encrypted) {
+            gnutls_record_recv(_sess, buf, sizeof(buf) - 1);
+        } else {
+            recv(_socket_descriptor, buf, sizeof(buf) - 1, 0);
+        }
+
+        seg = buf;
+        memset(buf, 0, sizeof(buf));
+        full_recv += seg;
+    }
+    if (_debug_on) { cout << "recv: " << full_recv << endl; }
+    return full_recv;
+}
+
+
 string Pop3socket::_recv(){
-    char buf[8193]{};
+    char buf[512]{};
     while (true) {
         if (_is_encrypted) {
             gnutls_record_recv(_sess, buf, sizeof(buf) - 1);

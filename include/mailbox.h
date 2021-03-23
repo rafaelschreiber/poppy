@@ -22,6 +22,7 @@ private:
 public:
     Pop3socket pop3sess{};
     Mailbox(string hostname, uint16_t port, string user, string pass, bool encrypted);
+    void print_mails();
 
 };
 

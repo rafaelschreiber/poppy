@@ -8,10 +8,15 @@
 #include <iostream>
 #include <string>
 #include <sstream>
+#include <vector>
+
+#include <tabulate.hpp>
+
 #include "pop3socket.h"
 #include "mailbox.h"
 
 using namespace std;
+using namespace tabulate;
 
 Mailbox::Mailbox(string hostname, uint16_t port, string user, string pass, bool encrypted){
     std::ostringstream oss;
@@ -34,4 +39,29 @@ Mailbox::Mailbox(string hostname, uint16_t port, string user, string pass, bool 
                 throw oss.str();
         }
     }
+}
+
+void Mailbox::print_mails() {
+    Table mail_table;
+    vector <mail_t> mail_list;
+    pop3sess.get_mails(mail_list);
+
+    mail_table.add_row({"Mail ID", "Sender", "Subject", "Date"});
+
+    for (mail_t mail : mail_list) {
+        mail_table.add_row({to_string(mail.id()), mail.sender(), mail.subject(), mail.date()});
+    }
+
+    mail_table.format()
+            .border_top("-")
+            .border_bottom("-")
+            .border_left("|")
+            .border_right("|")
+            .corner(".");
+
+    mail_table[0].format()
+            .font_color(Color::yellow)
+            .font_style({FontStyle::bold});
+
+    cout << mail_table << endl;
 }

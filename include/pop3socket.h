@@ -99,8 +99,10 @@ private:
     int _setup_gnutls();
     int _recv_server_ok();
     string _recv();
+    string _recv_to_end();
     int _send(string msg);
     map<string, string> _get_header(uint16_t mailid);
+    string _get_uidl(uint16_t mailid);
 
 
 public:
