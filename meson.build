@@ -6,6 +6,7 @@ project('pop3client_29', 'cpp',
 
 # thread_dep = dependency('threads')
 gnutls_dep = dependency('gnutls')
+mailutils_dep = declare_dependency(link_args : ['-L/usr/local/lib', '-lmailutils'], include_directories : ['/usr/local/include'])
 
 # CLI11: https://github.com/CLIUtils/CLI11
 add_global_arguments('-I' + get_option('cli11_include_dir'), language : 'cpp')
@@ -28,5 +29,5 @@ src = ['src/main.cpp', 'src/mailbox.cpp', 'src/pop3socket.cpp', 'src/pystring.cp
 executable('pop3client',
            sources : src,
            include_directories : inc_dir,
-           dependencies : [gnutls_dep]
+           dependencies : [gnutls_dep, mailutils_dep]
 )

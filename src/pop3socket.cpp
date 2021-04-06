@@ -19,6 +19,7 @@
 
 #include <gnutls/gnutls.h>
 #include "pystring.h"
+#include <mailutils/mime.h>
 
 #include "pop3socket.h"
 
@@ -169,18 +170,21 @@ map<string, string> Pop3socket::_get_header(uint16_t mailid){
     string headers_response = _recv_to_end();
     map<string, string> headers;
     vector<string> headers_rows;
+    vector<string> encoded_parts;
     pystring::split(headers_response, headers_rows, "\r\n");
     headers_rows.erase(headers_rows.begin());
 
     string key;
     string prev_key;
     string val;
+    string decoded_val;
     for (string headers_row : headers_rows){
         if (headers_row.length() == 0) { break; }
 
         prev_key = key;
         key.clear();
         val.clear();
+        decoded_val.clear();
 
         for(char c : headers_row){
             if(c == ':'){ break; }
@@ -193,6 +197,12 @@ map<string, string> Pop3socket::_get_header(uint16_t mailid){
             headers[prev_key] += headers_row;
             key = prev_key;
             continue;
+        }
+
+        if (key == "Subject"){
+            char *decoded_part_val;
+            mu_rfc2047_decode("UTF-8", val.c_str(), &decoded_part_val);
+            val = (string) decoded_part_val;
         }
 
         headers[key] = val;
