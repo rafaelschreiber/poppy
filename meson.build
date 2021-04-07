@@ -7,6 +7,8 @@ project('pop3client_29', 'cpp',
 # thread_dep = dependency('threads')
 gnutls_dep = dependency('gnutls')
 mailutils_dep = declare_dependency(link_args : ['-L/usr/local/lib', '-lmailutils'], include_directories : ['/usr/local/include'])
+protobuf_dep = dependency('protobuf')
+grpc_dep = declare_dependency(link_args : ['-L/usr/local/lib', '-lgrpc++'])
 
 # CLI11: https://github.com/CLIUtils/CLI11
 add_global_arguments('-I' + get_option('cli11_include_dir'), language : 'cpp')
@@ -24,10 +26,11 @@ add_global_arguments('-I' + get_option('tabulate_include_dir'), language : 'cpp'
 add_global_arguments('-I' + get_option('tfile_include_dir'), language : 'cpp')
 
 inc_dir = include_directories('include')
-src = ['src/main.cpp', 'src/mailbox.cpp', 'src/pop3socket.cpp', 'src/pystring.cpp']
+src = ['src/main.cpp', 'src/mailbox.cpp', 'src/pop3socket.cpp', 
+       'src/pystring.cpp', 'src/pop3client.pb.cc', 'src/pop3client.grpc.pb.cc']
 
 executable('pop3client',
            sources : src,
            include_directories : inc_dir,
-           dependencies : [gnutls_dep, mailutils_dep]
+           dependencies : [gnutls_dep, mailutils_dep, protobuf_dep, grpc_dep]
 )

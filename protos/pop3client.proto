@@ -1,0 +1,28 @@
+syntax = "proto3";
+
+import "google/protobuf/empty.proto";
+
+message MailPreview {
+  uint32 mailid = 1;
+  uint32 size = 2;
+  string uidl = 3;
+  map<string, string> header = 4;
+}
+
+message MailList {
+  uint32 length = 1;
+  uint32 size = 2;
+}
+
+message MailPreviewRequest {
+  uint32 id = 1;
+}
+
+message MailPreviewResponse {
+  repeated MailPreview mail_previews = 1;
+}
+
+service MailService {
+  rpc GetMailList (google.protobuf.Empty) returns (MailList) {}
+  rpc GetMailPreviews (MailPreviewRequest) returns (MailPreviewResponse) {}
+}
