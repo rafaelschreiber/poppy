@@ -9,6 +9,7 @@
 #include <string>
 #include <sstream>
 #include <vector>
+#include <algorithm>
 
 #include <tabulate.hpp>
 
@@ -39,29 +40,50 @@ Mailbox::Mailbox(string hostname, uint16_t port, string user, string pass, bool 
                 throw oss.str();
         }
     }
+    update_maillist();
 }
 
-void Mailbox::print_mails() {
-    Table mail_table;
-    vector <mail_t> mail_list;
-    pop3sess.get_mails(mail_list);
 
-    mail_table.add_row({"Mail ID", "Sender", "Subject", "Date"});
+int Mailbox::update_maillist() {
+    vector<mail_t> new_mails_list;
+    int status = pop3sess.get_mails(new_mails_list);
+    if (status != SUCCESS) { return status; }
+    reverse(_mail_list.begin(), _mail_list.end());
+    
+    size_t new_mails_count = new_mails_list.size();
+    size_t new_mails_added = new_mails_count - _mail_list.size();
 
-    for (mail_t mail : mail_list) {
-        mail_table.add_row({to_string(mail.id()), mail.sender(), mail.subject(), mail.date()});
+    for (size_t i = 0; i < new_mails_added; i++){
+        mail_t new_mail = new_mails_list.at(new_mails_count - new_mails_added + i);
+        _mailbox_size += new_mail.size();
+        _mail_list.push_back(new_mail);
     }
 
-    mail_table.format()
-            .border_top("-")
-            .border_bottom("-")
-            .border_left("|")
-            .border_right("|")
-            .corner(".");
+    mail_t *mail_ptr = _mail_list.data();
+    for (size_t i = 1; i <= new_mails_count; i++) {
+        mail_ptr->id(i);
+        mail_ptr++;
+    }
 
-    mail_table[0].format()
-            .font_color(Color::yellow)
-            .font_style({FontStyle::bold});
+    reverse(_mail_list.begin(), _mail_list.end());
+    return SUCCESS;
+}
 
-    cout << mail_table << endl;
+int Mailbox::complete_mail_metadata(size_t pos, size_t len) {
+    mail_t *mail_ptr = _mail_list.data();
+    mail_ptr += pos;
+    for (size_t i = 0; i < len; i++){
+        if (mail_ptr == nullptr) { break; }
+        if (mail_ptr->uidl().length() == 0) {
+            int status = pop3sess.complete_mail(mail_ptr);
+            if (status != SUCCESS) { return status; }
+        }
+        mail_ptr++;
+    }
+    return SUCCESS;
+}
+
+mail_t Mailbox::get_email(size_t pos){
+    if (pos + 1 > _mail_list.size()) { return mail_t(); }
+    return _mail_list.at(pos);
 }

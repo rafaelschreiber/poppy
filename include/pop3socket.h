@@ -43,11 +43,9 @@ private:
     uint32_t _size{};
 
 public:
-    mail_t(uint16_t id, uint32_t size, string uidl, map<string, string> headers) { 
+    mail_t(uint16_t id, uint32_t size) { 
         _id = id;
         _size = size;
-        _uidl = uidl;
-        _headers = headers;
     }
 
     mail_t() { }
@@ -56,7 +54,7 @@ public:
     void id(uint16_t id) { _id = id; }
 
     string uidl() { return _uidl; }
-    void id(string uidl) { _uidl = uidl; }
+    void uidl(string uidl) { _uidl = uidl; }
     
     uint16_t size() { return _size; }
     void size(uint32_t size) { _size = size; }
@@ -101,7 +99,7 @@ private:
     string _recv();
     string _recv_to_end();
     int _send(string msg);
-    map<string, string> _get_header(uint16_t mailid);
+    map<string, string> _get_headers(uint16_t mailid);
     string _get_uidl(uint16_t mailid);
 
 
@@ -113,6 +111,7 @@ public:
     int connect();
     void switch_debug();
     int login(string username, string password);
+    int complete_mail(mail_t *mail);
     bool ping();
     int get_stats(stat_t *status);
     ~Pop3socket();

@@ -156,16 +156,23 @@ int Pop3socket::get_mails(vector<mail_t> &mails){
 
         pystring::split(list_row, list_row_data, " ");
 
-        map<string, string> headers = _get_header(stoi(list_row_data.at(0)));  
-        mail_t new_mail(stoi(list_row_data.at(0)), stoi(list_row_data.at(1)),
-                        _get_uidl(stoi(list_row_data.at(0))), headers);
+        mail_t new_mail(stoi(list_row_data.at(0)), stoi(list_row_data.at(1)));
         mails.push_back(new_mail);
     }
 
     return SUCCESS;
 }
 
-map<string, string> Pop3socket::_get_header(uint16_t mailid){
+int Pop3socket::complete_mail(mail_t *mail){
+    if(!_session_up){ return NOT_CONNECTED_ERR; }
+    if(!_is_logged_in){ return NOT_LOGGED_IN_ERR; }
+    if (mail->uidl().length() != 0) { return SUCCESS; }
+    mail->uidl(_get_uidl(mail->id()));
+    mail->headers(_get_headers(mail->id()));
+    return SUCCESS;
+}
+
+map<string, string> Pop3socket::_get_headers(uint16_t mailid){
     _send("TOP " + to_string(mailid) + " 0");
     string headers_response = _recv_to_end();
     map<string, string> headers;
@@ -216,7 +223,8 @@ string Pop3socket::_get_uidl(uint16_t mailid) {
     string uidl_response = _recv();
     vector<string> uidl_data;
     pystring::split(uidl_response, uidl_data, " ");
-    return uidl_data.at(2);
+    string return_uidl = uidl_data.at(2);
+    return return_uidl.erase(return_uidl.length() - 2);
 }
 
 int Pop3socket::get_stats(stat_t *status){

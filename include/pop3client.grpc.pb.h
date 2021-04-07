@@ -48,6 +48,13 @@ class MailService final {
     std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::MailPreviewResponse>> PrepareAsyncGetMailPreviews(::grpc::ClientContext* context, const ::MailPreviewRequest& request, ::grpc::CompletionQueue* cq) {
       return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::MailPreviewResponse>>(PrepareAsyncGetMailPreviewsRaw(context, request, cq));
     }
+    virtual ::grpc::Status UpdateMailList(::grpc::ClientContext* context, const ::google::protobuf::Empty& request, ::google::protobuf::Empty* response) = 0;
+    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::google::protobuf::Empty>> AsyncUpdateMailList(::grpc::ClientContext* context, const ::google::protobuf::Empty& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::google::protobuf::Empty>>(AsyncUpdateMailListRaw(context, request, cq));
+    }
+    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::google::protobuf::Empty>> PrepareAsyncUpdateMailList(::grpc::ClientContext* context, const ::google::protobuf::Empty& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::google::protobuf::Empty>>(PrepareAsyncUpdateMailListRaw(context, request, cq));
+    }
     class experimental_async_interface {
      public:
       virtual ~experimental_async_interface() {}
@@ -63,6 +70,12 @@ class MailService final {
       #else
       virtual void GetMailPreviews(::grpc::ClientContext* context, const ::MailPreviewRequest* request, ::MailPreviewResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) = 0;
       #endif
+      virtual void UpdateMailList(::grpc::ClientContext* context, const ::google::protobuf::Empty* request, ::google::protobuf::Empty* response, std::function<void(::grpc::Status)>) = 0;
+      #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
+      virtual void UpdateMailList(::grpc::ClientContext* context, const ::google::protobuf::Empty* request, ::google::protobuf::Empty* response, ::grpc::ClientUnaryReactor* reactor) = 0;
+      #else
+      virtual void UpdateMailList(::grpc::ClientContext* context, const ::google::protobuf::Empty* request, ::google::protobuf::Empty* response, ::grpc::experimental::ClientUnaryReactor* reactor) = 0;
+      #endif
     };
     #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
     typedef class experimental_async_interface async_interface;
@@ -76,6 +89,8 @@ class MailService final {
     virtual ::grpc::ClientAsyncResponseReaderInterface< ::MailList>* PrepareAsyncGetMailListRaw(::grpc::ClientContext* context, const ::google::protobuf::Empty& request, ::grpc::CompletionQueue* cq) = 0;
     virtual ::grpc::ClientAsyncResponseReaderInterface< ::MailPreviewResponse>* AsyncGetMailPreviewsRaw(::grpc::ClientContext* context, const ::MailPreviewRequest& request, ::grpc::CompletionQueue* cq) = 0;
     virtual ::grpc::ClientAsyncResponseReaderInterface< ::MailPreviewResponse>* PrepareAsyncGetMailPreviewsRaw(::grpc::ClientContext* context, const ::MailPreviewRequest& request, ::grpc::CompletionQueue* cq) = 0;
+    virtual ::grpc::ClientAsyncResponseReaderInterface< ::google::protobuf::Empty>* AsyncUpdateMailListRaw(::grpc::ClientContext* context, const ::google::protobuf::Empty& request, ::grpc::CompletionQueue* cq) = 0;
+    virtual ::grpc::ClientAsyncResponseReaderInterface< ::google::protobuf::Empty>* PrepareAsyncUpdateMailListRaw(::grpc::ClientContext* context, const ::google::protobuf::Empty& request, ::grpc::CompletionQueue* cq) = 0;
   };
   class Stub final : public StubInterface {
    public:
@@ -94,6 +109,13 @@ class MailService final {
     std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::MailPreviewResponse>> PrepareAsyncGetMailPreviews(::grpc::ClientContext* context, const ::MailPreviewRequest& request, ::grpc::CompletionQueue* cq) {
       return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::MailPreviewResponse>>(PrepareAsyncGetMailPreviewsRaw(context, request, cq));
     }
+    ::grpc::Status UpdateMailList(::grpc::ClientContext* context, const ::google::protobuf::Empty& request, ::google::protobuf::Empty* response) override;
+    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::google::protobuf::Empty>> AsyncUpdateMailList(::grpc::ClientContext* context, const ::google::protobuf::Empty& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::google::protobuf::Empty>>(AsyncUpdateMailListRaw(context, request, cq));
+    }
+    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::google::protobuf::Empty>> PrepareAsyncUpdateMailList(::grpc::ClientContext* context, const ::google::protobuf::Empty& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::google::protobuf::Empty>>(PrepareAsyncUpdateMailListRaw(context, request, cq));
+    }
     class experimental_async final :
       public StubInterface::experimental_async_interface {
      public:
@@ -108,6 +130,12 @@ class MailService final {
       void GetMailPreviews(::grpc::ClientContext* context, const ::MailPreviewRequest* request, ::MailPreviewResponse* response, ::grpc::ClientUnaryReactor* reactor) override;
       #else
       void GetMailPreviews(::grpc::ClientContext* context, const ::MailPreviewRequest* request, ::MailPreviewResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) override;
+      #endif
+      void UpdateMailList(::grpc::ClientContext* context, const ::google::protobuf::Empty* request, ::google::protobuf::Empty* response, std::function<void(::grpc::Status)>) override;
+      #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
+      void UpdateMailList(::grpc::ClientContext* context, const ::google::protobuf::Empty* request, ::google::protobuf::Empty* response, ::grpc::ClientUnaryReactor* reactor) override;
+      #else
+      void UpdateMailList(::grpc::ClientContext* context, const ::google::protobuf::Empty* request, ::google::protobuf::Empty* response, ::grpc::experimental::ClientUnaryReactor* reactor) override;
       #endif
      private:
       friend class Stub;
@@ -124,8 +152,11 @@ class MailService final {
     ::grpc::ClientAsyncResponseReader< ::MailList>* PrepareAsyncGetMailListRaw(::grpc::ClientContext* context, const ::google::protobuf::Empty& request, ::grpc::CompletionQueue* cq) override;
     ::grpc::ClientAsyncResponseReader< ::MailPreviewResponse>* AsyncGetMailPreviewsRaw(::grpc::ClientContext* context, const ::MailPreviewRequest& request, ::grpc::CompletionQueue* cq) override;
     ::grpc::ClientAsyncResponseReader< ::MailPreviewResponse>* PrepareAsyncGetMailPreviewsRaw(::grpc::ClientContext* context, const ::MailPreviewRequest& request, ::grpc::CompletionQueue* cq) override;
+    ::grpc::ClientAsyncResponseReader< ::google::protobuf::Empty>* AsyncUpdateMailListRaw(::grpc::ClientContext* context, const ::google::protobuf::Empty& request, ::grpc::CompletionQueue* cq) override;
+    ::grpc::ClientAsyncResponseReader< ::google::protobuf::Empty>* PrepareAsyncUpdateMailListRaw(::grpc::ClientContext* context, const ::google::protobuf::Empty& request, ::grpc::CompletionQueue* cq) override;
     const ::grpc::internal::RpcMethod rpcmethod_GetMailList_;
     const ::grpc::internal::RpcMethod rpcmethod_GetMailPreviews_;
+    const ::grpc::internal::RpcMethod rpcmethod_UpdateMailList_;
   };
   static std::unique_ptr<Stub> NewStub(const std::shared_ptr< ::grpc::ChannelInterface>& channel, const ::grpc::StubOptions& options = ::grpc::StubOptions());
 
@@ -135,6 +166,7 @@ class MailService final {
     virtual ~Service();
     virtual ::grpc::Status GetMailList(::grpc::ServerContext* context, const ::google::protobuf::Empty* request, ::MailList* response);
     virtual ::grpc::Status GetMailPreviews(::grpc::ServerContext* context, const ::MailPreviewRequest* request, ::MailPreviewResponse* response);
+    virtual ::grpc::Status UpdateMailList(::grpc::ServerContext* context, const ::google::protobuf::Empty* request, ::google::protobuf::Empty* response);
   };
   template <class BaseClass>
   class WithAsyncMethod_GetMailList : public BaseClass {
@@ -176,7 +208,27 @@ class MailService final {
       ::grpc::Service::RequestAsyncUnary(1, context, request, response, new_call_cq, notification_cq, tag);
     }
   };
-  typedef WithAsyncMethod_GetMailList<WithAsyncMethod_GetMailPreviews<Service > > AsyncService;
+  template <class BaseClass>
+  class WithAsyncMethod_UpdateMailList : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithAsyncMethod_UpdateMailList() {
+      ::grpc::Service::MarkMethodAsync(2);
+    }
+    ~WithAsyncMethod_UpdateMailList() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status UpdateMailList(::grpc::ServerContext* /*context*/, const ::google::protobuf::Empty* /*request*/, ::google::protobuf::Empty* /*response*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    void RequestUpdateMailList(::grpc::ServerContext* context, ::google::protobuf::Empty* request, ::grpc::ServerAsyncResponseWriter< ::google::protobuf::Empty>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
+      ::grpc::Service::RequestAsyncUnary(2, context, request, response, new_call_cq, notification_cq, tag);
+    }
+  };
+  typedef WithAsyncMethod_GetMailList<WithAsyncMethod_GetMailPreviews<WithAsyncMethod_UpdateMailList<Service > > > AsyncService;
   template <class BaseClass>
   class ExperimentalWithCallbackMethod_GetMailList : public BaseClass {
    private:
@@ -271,11 +323,58 @@ class MailService final {
     #endif
       { return nullptr; }
   };
+  template <class BaseClass>
+  class ExperimentalWithCallbackMethod_UpdateMailList : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    ExperimentalWithCallbackMethod_UpdateMailList() {
+    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
+      ::grpc::Service::
+    #else
+      ::grpc::Service::experimental().
+    #endif
+        MarkMethodCallback(2,
+          new ::grpc::internal::CallbackUnaryHandler< ::google::protobuf::Empty, ::google::protobuf::Empty>(
+            [this](
+    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
+                   ::grpc::CallbackServerContext*
+    #else
+                   ::grpc::experimental::CallbackServerContext*
+    #endif
+                     context, const ::google::protobuf::Empty* request, ::google::protobuf::Empty* response) { return this->UpdateMailList(context, request, response); }));}
+    void SetMessageAllocatorFor_UpdateMailList(
+        ::grpc::experimental::MessageAllocator< ::google::protobuf::Empty, ::google::protobuf::Empty>* allocator) {
+    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
+      ::grpc::internal::MethodHandler* const handler = ::grpc::Service::GetHandler(2);
+    #else
+      ::grpc::internal::MethodHandler* const handler = ::grpc::Service::experimental().GetHandler(2);
+    #endif
+      static_cast<::grpc::internal::CallbackUnaryHandler< ::google::protobuf::Empty, ::google::protobuf::Empty>*>(handler)
+              ->SetMessageAllocator(allocator);
+    }
+    ~ExperimentalWithCallbackMethod_UpdateMailList() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status UpdateMailList(::grpc::ServerContext* /*context*/, const ::google::protobuf::Empty* /*request*/, ::google::protobuf::Empty* /*response*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
+    virtual ::grpc::ServerUnaryReactor* UpdateMailList(
+      ::grpc::CallbackServerContext* /*context*/, const ::google::protobuf::Empty* /*request*/, ::google::protobuf::Empty* /*response*/)
+    #else
+    virtual ::grpc::experimental::ServerUnaryReactor* UpdateMailList(
+      ::grpc::experimental::CallbackServerContext* /*context*/, const ::google::protobuf::Empty* /*request*/, ::google::protobuf::Empty* /*response*/)
+    #endif
+      { return nullptr; }
+  };
   #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-  typedef ExperimentalWithCallbackMethod_GetMailList<ExperimentalWithCallbackMethod_GetMailPreviews<Service > > CallbackService;
+  typedef ExperimentalWithCallbackMethod_GetMailList<ExperimentalWithCallbackMethod_GetMailPreviews<ExperimentalWithCallbackMethod_UpdateMailList<Service > > > CallbackService;
   #endif
 
-  typedef ExperimentalWithCallbackMethod_GetMailList<ExperimentalWithCallbackMethod_GetMailPreviews<Service > > ExperimentalCallbackService;
+  typedef ExperimentalWithCallbackMethod_GetMailList<ExperimentalWithCallbackMethod_GetMailPreviews<ExperimentalWithCallbackMethod_UpdateMailList<Service > > > ExperimentalCallbackService;
   template <class BaseClass>
   class WithGenericMethod_GetMailList : public BaseClass {
    private:
@@ -306,6 +405,23 @@ class MailService final {
     }
     // disable synchronous version of this method
     ::grpc::Status GetMailPreviews(::grpc::ServerContext* /*context*/, const ::MailPreviewRequest* /*request*/, ::MailPreviewResponse* /*response*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+  };
+  template <class BaseClass>
+  class WithGenericMethod_UpdateMailList : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithGenericMethod_UpdateMailList() {
+      ::grpc::Service::MarkMethodGeneric(2);
+    }
+    ~WithGenericMethod_UpdateMailList() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status UpdateMailList(::grpc::ServerContext* /*context*/, const ::google::protobuf::Empty* /*request*/, ::google::protobuf::Empty* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
@@ -348,6 +464,26 @@ class MailService final {
     }
     void RequestGetMailPreviews(::grpc::ServerContext* context, ::grpc::ByteBuffer* request, ::grpc::ServerAsyncResponseWriter< ::grpc::ByteBuffer>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
       ::grpc::Service::RequestAsyncUnary(1, context, request, response, new_call_cq, notification_cq, tag);
+    }
+  };
+  template <class BaseClass>
+  class WithRawMethod_UpdateMailList : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithRawMethod_UpdateMailList() {
+      ::grpc::Service::MarkMethodRaw(2);
+    }
+    ~WithRawMethod_UpdateMailList() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status UpdateMailList(::grpc::ServerContext* /*context*/, const ::google::protobuf::Empty* /*request*/, ::google::protobuf::Empty* /*response*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    void RequestUpdateMailList(::grpc::ServerContext* context, ::grpc::ByteBuffer* request, ::grpc::ServerAsyncResponseWriter< ::grpc::ByteBuffer>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
+      ::grpc::Service::RequestAsyncUnary(2, context, request, response, new_call_cq, notification_cq, tag);
     }
   };
   template <class BaseClass>
@@ -427,6 +563,44 @@ class MailService final {
       { return nullptr; }
   };
   template <class BaseClass>
+  class ExperimentalWithRawCallbackMethod_UpdateMailList : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    ExperimentalWithRawCallbackMethod_UpdateMailList() {
+    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
+      ::grpc::Service::
+    #else
+      ::grpc::Service::experimental().
+    #endif
+        MarkMethodRawCallback(2,
+          new ::grpc::internal::CallbackUnaryHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
+            [this](
+    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
+                   ::grpc::CallbackServerContext*
+    #else
+                   ::grpc::experimental::CallbackServerContext*
+    #endif
+                     context, const ::grpc::ByteBuffer* request, ::grpc::ByteBuffer* response) { return this->UpdateMailList(context, request, response); }));
+    }
+    ~ExperimentalWithRawCallbackMethod_UpdateMailList() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status UpdateMailList(::grpc::ServerContext* /*context*/, const ::google::protobuf::Empty* /*request*/, ::google::protobuf::Empty* /*response*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
+    virtual ::grpc::ServerUnaryReactor* UpdateMailList(
+      ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/)
+    #else
+    virtual ::grpc::experimental::ServerUnaryReactor* UpdateMailList(
+      ::grpc::experimental::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/)
+    #endif
+      { return nullptr; }
+  };
+  template <class BaseClass>
   class WithStreamedUnaryMethod_GetMailList : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
@@ -480,9 +654,36 @@ class MailService final {
     // replace default version of method with streamed unary
     virtual ::grpc::Status StreamedGetMailPreviews(::grpc::ServerContext* context, ::grpc::ServerUnaryStreamer< ::MailPreviewRequest,::MailPreviewResponse>* server_unary_streamer) = 0;
   };
-  typedef WithStreamedUnaryMethod_GetMailList<WithStreamedUnaryMethod_GetMailPreviews<Service > > StreamedUnaryService;
+  template <class BaseClass>
+  class WithStreamedUnaryMethod_UpdateMailList : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithStreamedUnaryMethod_UpdateMailList() {
+      ::grpc::Service::MarkMethodStreamed(2,
+        new ::grpc::internal::StreamedUnaryHandler<
+          ::google::protobuf::Empty, ::google::protobuf::Empty>(
+            [this](::grpc::ServerContext* context,
+                   ::grpc::ServerUnaryStreamer<
+                     ::google::protobuf::Empty, ::google::protobuf::Empty>* streamer) {
+                       return this->StreamedUpdateMailList(context,
+                         streamer);
+                  }));
+    }
+    ~WithStreamedUnaryMethod_UpdateMailList() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable regular version of this method
+    ::grpc::Status UpdateMailList(::grpc::ServerContext* /*context*/, const ::google::protobuf::Empty* /*request*/, ::google::protobuf::Empty* /*response*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    // replace default version of method with streamed unary
+    virtual ::grpc::Status StreamedUpdateMailList(::grpc::ServerContext* context, ::grpc::ServerUnaryStreamer< ::google::protobuf::Empty,::google::protobuf::Empty>* server_unary_streamer) = 0;
+  };
+  typedef WithStreamedUnaryMethod_GetMailList<WithStreamedUnaryMethod_GetMailPreviews<WithStreamedUnaryMethod_UpdateMailList<Service > > > StreamedUnaryService;
   typedef Service SplitStreamedService;
-  typedef WithStreamedUnaryMethod_GetMailList<WithStreamedUnaryMethod_GetMailPreviews<Service > > StreamedService;
+  typedef WithStreamedUnaryMethod_GetMailList<WithStreamedUnaryMethod_GetMailPreviews<WithStreamedUnaryMethod_UpdateMailList<Service > > > StreamedService;
 };
 
 

@@ -38,6 +38,10 @@ build/*
 .idea/
 .vscode/
 
+# Python Stuff
+__pycache__/
+venv/
+
 # LaTeX Stuff
 *.aux
 *.log

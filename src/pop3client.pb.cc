@@ -16,20 +16,20 @@
 #include <google/protobuf/port_def.inc>
 
 PROTOBUF_PRAGMA_INIT_SEG
-constexpr MailPreview_HeaderEntry_DoNotUse::MailPreview_HeaderEntry_DoNotUse(
+constexpr MailPreview_HeadersEntry_DoNotUse::MailPreview_HeadersEntry_DoNotUse(
   ::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized){}
-struct MailPreview_HeaderEntry_DoNotUseDefaultTypeInternal {
-  constexpr MailPreview_HeaderEntry_DoNotUseDefaultTypeInternal()
+struct MailPreview_HeadersEntry_DoNotUseDefaultTypeInternal {
+  constexpr MailPreview_HeadersEntry_DoNotUseDefaultTypeInternal()
     : _instance(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized{}) {}
-  ~MailPreview_HeaderEntry_DoNotUseDefaultTypeInternal() {}
+  ~MailPreview_HeadersEntry_DoNotUseDefaultTypeInternal() {}
   union {
-    MailPreview_HeaderEntry_DoNotUse _instance;
+    MailPreview_HeadersEntry_DoNotUse _instance;
   };
 };
-PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT MailPreview_HeaderEntry_DoNotUseDefaultTypeInternal _MailPreview_HeaderEntry_DoNotUse_default_instance_;
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT MailPreview_HeadersEntry_DoNotUseDefaultTypeInternal _MailPreview_HeadersEntry_DoNotUse_default_instance_;
 constexpr MailPreview::MailPreview(
   ::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized)
-  : header_(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized{})
+  : headers_(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized{})
   , uidl_(&::PROTOBUF_NAMESPACE_ID::internal::fixed_address_empty_string)
   , mailid_(0u)
   , size_(0u){}
@@ -57,7 +57,8 @@ struct MailListDefaultTypeInternal {
 PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT MailListDefaultTypeInternal _MailList_default_instance_;
 constexpr MailPreviewRequest::MailPreviewRequest(
   ::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized)
-  : id_(0u){}
+  : pos_(0u)
+  , len_(0u){}
 struct MailPreviewRequestDefaultTypeInternal {
   constexpr MailPreviewRequestDefaultTypeInternal()
     : _instance(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized{}) {}
@@ -69,7 +70,7 @@ struct MailPreviewRequestDefaultTypeInternal {
 PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT MailPreviewRequestDefaultTypeInternal _MailPreviewRequest_default_instance_;
 constexpr MailPreviewResponse::MailPreviewResponse(
   ::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized)
-  : mail_previews_(){}
+  : mail_preview_(){}
 struct MailPreviewResponseDefaultTypeInternal {
   constexpr MailPreviewResponseDefaultTypeInternal()
     : _instance(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized{}) {}
@@ -84,13 +85,13 @@ static constexpr ::PROTOBUF_NAMESPACE_ID::EnumDescriptor const** file_level_enum
 static constexpr ::PROTOBUF_NAMESPACE_ID::ServiceDescriptor const** file_level_service_descriptors_pop3client_2eproto = nullptr;
 
 const ::PROTOBUF_NAMESPACE_ID::uint32 TableStruct_pop3client_2eproto::offsets[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) = {
-  PROTOBUF_FIELD_OFFSET(::MailPreview_HeaderEntry_DoNotUse, _has_bits_),
-  PROTOBUF_FIELD_OFFSET(::MailPreview_HeaderEntry_DoNotUse, _internal_metadata_),
+  PROTOBUF_FIELD_OFFSET(::MailPreview_HeadersEntry_DoNotUse, _has_bits_),
+  PROTOBUF_FIELD_OFFSET(::MailPreview_HeadersEntry_DoNotUse, _internal_metadata_),
   ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
   ~0u,  // no _weak_field_map_
-  PROTOBUF_FIELD_OFFSET(::MailPreview_HeaderEntry_DoNotUse, key_),
-  PROTOBUF_FIELD_OFFSET(::MailPreview_HeaderEntry_DoNotUse, value_),
+  PROTOBUF_FIELD_OFFSET(::MailPreview_HeadersEntry_DoNotUse, key_),
+  PROTOBUF_FIELD_OFFSET(::MailPreview_HeadersEntry_DoNotUse, value_),
   0,
   1,
   ~0u,  // no _has_bits_
@@ -101,7 +102,7 @@ const ::PROTOBUF_NAMESPACE_ID::uint32 TableStruct_pop3client_2eproto::offsets[] 
   PROTOBUF_FIELD_OFFSET(::MailPreview, mailid_),
   PROTOBUF_FIELD_OFFSET(::MailPreview, size_),
   PROTOBUF_FIELD_OFFSET(::MailPreview, uidl_),
-  PROTOBUF_FIELD_OFFSET(::MailPreview, header_),
+  PROTOBUF_FIELD_OFFSET(::MailPreview, headers_),
   ~0u,  // no _has_bits_
   PROTOBUF_FIELD_OFFSET(::MailList, _internal_metadata_),
   ~0u,  // no _extensions_
@@ -114,24 +115,25 @@ const ::PROTOBUF_NAMESPACE_ID::uint32 TableStruct_pop3client_2eproto::offsets[] 
   ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
   ~0u,  // no _weak_field_map_
-  PROTOBUF_FIELD_OFFSET(::MailPreviewRequest, id_),
+  PROTOBUF_FIELD_OFFSET(::MailPreviewRequest, pos_),
+  PROTOBUF_FIELD_OFFSET(::MailPreviewRequest, len_),
   ~0u,  // no _has_bits_
   PROTOBUF_FIELD_OFFSET(::MailPreviewResponse, _internal_metadata_),
   ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
   ~0u,  // no _weak_field_map_
-  PROTOBUF_FIELD_OFFSET(::MailPreviewResponse, mail_previews_),
+  PROTOBUF_FIELD_OFFSET(::MailPreviewResponse, mail_preview_),
 };
 static const ::PROTOBUF_NAMESPACE_ID::internal::MigrationSchema schemas[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) = {
-  { 0, 7, sizeof(::MailPreview_HeaderEntry_DoNotUse)},
+  { 0, 7, sizeof(::MailPreview_HeadersEntry_DoNotUse)},
   { 9, -1, sizeof(::MailPreview)},
   { 18, -1, sizeof(::MailList)},
   { 25, -1, sizeof(::MailPreviewRequest)},
-  { 31, -1, sizeof(::MailPreviewResponse)},
+  { 32, -1, sizeof(::MailPreviewResponse)},
 };
 
 static ::PROTOBUF_NAMESPACE_ID::Message const * const file_default_instances[] = {
-  reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::_MailPreview_HeaderEntry_DoNotUse_default_instance_),
+  reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::_MailPreview_HeadersEntry_DoNotUse_default_instance_),
   reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::_MailPreview_default_instance_),
   reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::_MailList_default_instance_),
   reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::_MailPreviewRequest_default_instance_),
@@ -140,24 +142,26 @@ static ::PROTOBUF_NAMESPACE_ID::Message const * const file_default_instances[] =
 
 const char descriptor_table_protodef_pop3client_2eproto[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) =
   "\n\020pop3client.proto\032\033google/protobuf/empt"
-  "y.proto\"\222\001\n\013MailPreview\022\016\n\006mailid\030\001 \001(\r\022"
-  "\014\n\004size\030\002 \001(\r\022\014\n\004uidl\030\003 \001(\t\022(\n\006header\030\004 "
-  "\003(\0132\030.MailPreview.HeaderEntry\032-\n\013HeaderE"
-  "ntry\022\013\n\003key\030\001 \001(\t\022\r\n\005value\030\002 \001(\t:\0028\001\"(\n\010"
-  "MailList\022\016\n\006length\030\001 \001(\r\022\014\n\004size\030\002 \001(\r\" "
-  "\n\022MailPreviewRequest\022\n\n\002id\030\001 \001(\r\":\n\023Mail"
-  "PreviewResponse\022#\n\rmail_previews\030\001 \003(\0132\014"
-  ".MailPreview2\201\001\n\013MailService\0222\n\013GetMailL"
-  "ist\022\026.google.protobuf.Empty\032\t.MailList\"\000"
-  "\022>\n\017GetMailPreviews\022\023.MailPreviewRequest"
-  "\032\024.MailPreviewResponse\"\000b\006proto3"
+  "y.proto\"\225\001\n\013MailPreview\022\016\n\006mailid\030\001 \001(\r\022"
+  "\014\n\004size\030\002 \001(\r\022\014\n\004uidl\030\003 \001(\t\022*\n\007headers\030\004"
+  " \003(\0132\031.MailPreview.HeadersEntry\032.\n\014Heade"
+  "rsEntry\022\013\n\003key\030\001 \001(\t\022\r\n\005value\030\002 \001(\t:\0028\001\""
+  "(\n\010MailList\022\016\n\006length\030\001 \001(\r\022\014\n\004size\030\002 \001("
+  "\r\".\n\022MailPreviewRequest\022\013\n\003pos\030\001 \001(\r\022\013\n\003"
+  "len\030\002 \001(\r\"9\n\023MailPreviewResponse\022\"\n\014mail"
+  "_preview\030\001 \003(\0132\014.MailPreview2\305\001\n\013MailSer"
+  "vice\0222\n\013GetMailList\022\026.google.protobuf.Em"
+  "pty\032\t.MailList\"\000\022>\n\017GetMailPreviews\022\023.Ma"
+  "ilPreviewRequest\032\024.MailPreviewResponse\"\000"
+  "\022B\n\016UpdateMailList\022\026.google.protobuf.Emp"
+  "ty\032\026.google.protobuf.Empty\"\000b\006proto3"
   ;
 static const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable*const descriptor_table_pop3client_2eproto_deps[1] = {
   &::descriptor_table_google_2fprotobuf_2fempty_2eproto,
 };
 static ::PROTOBUF_NAMESPACE_ID::internal::once_flag descriptor_table_pop3client_2eproto_once;
 const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable descriptor_table_pop3client_2eproto = {
-  false, false, 472, descriptor_table_protodef_pop3client_2eproto, "pop3client.proto", 
+  false, false, 556, descriptor_table_protodef_pop3client_2eproto, "pop3client.proto", 
   &descriptor_table_pop3client_2eproto_once, descriptor_table_pop3client_2eproto_deps, 1, 5,
   schemas, file_default_instances, TableStruct_pop3client_2eproto::offsets,
   file_level_metadata_pop3client_2eproto, file_level_enum_descriptors_pop3client_2eproto, file_level_service_descriptors_pop3client_2eproto,
@@ -173,16 +177,16 @@ PROTOBUF_ATTRIBUTE_INIT_PRIORITY static ::PROTOBUF_NAMESPACE_ID::internal::AddDe
 
 // ===================================================================
 
-MailPreview_HeaderEntry_DoNotUse::MailPreview_HeaderEntry_DoNotUse() {}
-MailPreview_HeaderEntry_DoNotUse::MailPreview_HeaderEntry_DoNotUse(::PROTOBUF_NAMESPACE_ID::Arena* arena)
+MailPreview_HeadersEntry_DoNotUse::MailPreview_HeadersEntry_DoNotUse() {}
+MailPreview_HeadersEntry_DoNotUse::MailPreview_HeadersEntry_DoNotUse(::PROTOBUF_NAMESPACE_ID::Arena* arena)
     : SuperType(arena) {}
-void MailPreview_HeaderEntry_DoNotUse::MergeFrom(const MailPreview_HeaderEntry_DoNotUse& other) {
+void MailPreview_HeadersEntry_DoNotUse::MergeFrom(const MailPreview_HeadersEntry_DoNotUse& other) {
   MergeFromInternal(other);
 }
-::PROTOBUF_NAMESPACE_ID::Metadata MailPreview_HeaderEntry_DoNotUse::GetMetadata() const {
+::PROTOBUF_NAMESPACE_ID::Metadata MailPreview_HeadersEntry_DoNotUse::GetMetadata() const {
   return GetMetadataStatic();
 }
-void MailPreview_HeaderEntry_DoNotUse::MergeFrom(
+void MailPreview_HeadersEntry_DoNotUse::MergeFrom(
     const ::PROTOBUF_NAMESPACE_ID::Message& other) {
   ::PROTOBUF_NAMESPACE_ID::Message::MergeFrom(other);
 }
@@ -196,7 +200,7 @@ class MailPreview::_Internal {
 
 MailPreview::MailPreview(::PROTOBUF_NAMESPACE_ID::Arena* arena)
   : ::PROTOBUF_NAMESPACE_ID::Message(arena),
-  header_(arena) {
+  headers_(arena) {
   SharedCtor();
   RegisterArenaDtor(arena);
   // @@protoc_insertion_point(arena_constructor:MailPreview)
@@ -204,7 +208,7 @@ MailPreview::MailPreview(::PROTOBUF_NAMESPACE_ID::Arena* arena)
 MailPreview::MailPreview(const MailPreview& from)
   : ::PROTOBUF_NAMESPACE_ID::Message() {
   _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
-  header_.MergeFrom(from.header_);
+  headers_.MergeFrom(from.headers_);
   uidl_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
   if (!from._internal_uidl().empty()) {
     uidl_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, from._internal_uidl(), 
@@ -251,7 +255,7 @@ void MailPreview::Clear() {
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  header_.Clear();
+  headers_.Clear();
   uidl_.ClearToEmpty();
   ::memset(&mailid_, 0, static_cast<size_t>(
       reinterpret_cast<char*>(&size_) -
@@ -289,13 +293,13 @@ const char* MailPreview::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID
           CHK_(ptr);
         } else goto handle_unusual;
         continue;
-      // map<string, string> header = 4;
+      // map<string, string> headers = 4;
       case 4:
         if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 34)) {
           ptr -= 1;
           do {
             ptr += 1;
-            ptr = ctx->ParseMessage(&header_, ptr);
+            ptr = ctx->ParseMessage(&headers_, ptr);
             CHK_(ptr);
             if (!ctx->DataAvailable(ptr)) break;
           } while (::PROTOBUF_NAMESPACE_ID::internal::ExpectTag<34>(ptr));
@@ -351,8 +355,8 @@ failure:
         3, this->_internal_uidl(), target);
   }
 
-  // map<string, string> header = 4;
-  if (!this->_internal_header().empty()) {
+  // map<string, string> headers = 4;
+  if (!this->_internal_headers().empty()) {
     typedef ::PROTOBUF_NAMESPACE_ID::Map< std::string, std::string >::const_pointer
         ConstPtr;
     typedef ConstPtr SortItem;
@@ -362,35 +366,35 @@ failure:
         ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
           p->first.data(), static_cast<int>(p->first.length()),
           ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE,
-          "MailPreview.HeaderEntry.key");
+          "MailPreview.HeadersEntry.key");
         ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
           p->second.data(), static_cast<int>(p->second.length()),
           ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE,
-          "MailPreview.HeaderEntry.value");
+          "MailPreview.HeadersEntry.value");
       }
     };
 
     if (stream->IsSerializationDeterministic() &&
-        this->_internal_header().size() > 1) {
+        this->_internal_headers().size() > 1) {
       ::std::unique_ptr<SortItem[]> items(
-          new SortItem[this->_internal_header().size()]);
+          new SortItem[this->_internal_headers().size()]);
       typedef ::PROTOBUF_NAMESPACE_ID::Map< std::string, std::string >::size_type size_type;
       size_type n = 0;
       for (::PROTOBUF_NAMESPACE_ID::Map< std::string, std::string >::const_iterator
-          it = this->_internal_header().begin();
-          it != this->_internal_header().end(); ++it, ++n) {
+          it = this->_internal_headers().begin();
+          it != this->_internal_headers().end(); ++it, ++n) {
         items[static_cast<ptrdiff_t>(n)] = SortItem(&*it);
       }
       ::std::sort(&items[0], &items[static_cast<ptrdiff_t>(n)], Less());
       for (size_type i = 0; i < n; i++) {
-        target = MailPreview_HeaderEntry_DoNotUse::Funcs::InternalSerialize(4, items[static_cast<ptrdiff_t>(i)]->first, items[static_cast<ptrdiff_t>(i)]->second, target, stream);
+        target = MailPreview_HeadersEntry_DoNotUse::Funcs::InternalSerialize(4, items[static_cast<ptrdiff_t>(i)]->first, items[static_cast<ptrdiff_t>(i)]->second, target, stream);
         Utf8Check::Check(&(*items[static_cast<ptrdiff_t>(i)]));
       }
     } else {
       for (::PROTOBUF_NAMESPACE_ID::Map< std::string, std::string >::const_iterator
-          it = this->_internal_header().begin();
-          it != this->_internal_header().end(); ++it) {
-        target = MailPreview_HeaderEntry_DoNotUse::Funcs::InternalSerialize(4, it->first, it->second, target, stream);
+          it = this->_internal_headers().begin();
+          it != this->_internal_headers().end(); ++it) {
+        target = MailPreview_HeadersEntry_DoNotUse::Funcs::InternalSerialize(4, it->first, it->second, target, stream);
         Utf8Check::Check(&(*it));
       }
     }
@@ -412,13 +416,13 @@ size_t MailPreview::ByteSizeLong() const {
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  // map<string, string> header = 4;
+  // map<string, string> headers = 4;
   total_size += 1 *
-      ::PROTOBUF_NAMESPACE_ID::internal::FromIntSize(this->_internal_header_size());
+      ::PROTOBUF_NAMESPACE_ID::internal::FromIntSize(this->_internal_headers_size());
   for (::PROTOBUF_NAMESPACE_ID::Map< std::string, std::string >::const_iterator
-      it = this->_internal_header().begin();
-      it != this->_internal_header().end(); ++it) {
-    total_size += MailPreview_HeaderEntry_DoNotUse::Funcs::ByteSizeLong(it->first, it->second);
+      it = this->_internal_headers().begin();
+      it != this->_internal_headers().end(); ++it) {
+    total_size += MailPreview_HeadersEntry_DoNotUse::Funcs::ByteSizeLong(it->first, it->second);
   }
 
   // string uidl = 3;
@@ -473,7 +477,7 @@ void MailPreview::MergeFrom(const MailPreview& from) {
   ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
-  header_.MergeFrom(from.header_);
+  headers_.MergeFrom(from.headers_);
   if (from.uidl().size() > 0) {
     _internal_set_uidl(from._internal_uidl());
   }
@@ -506,7 +510,7 @@ bool MailPreview::IsInitialized() const {
 void MailPreview::InternalSwap(MailPreview* other) {
   using std::swap;
   _internal_metadata_.Swap<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(&other->_internal_metadata_);
-  header_.Swap(&other->header_);
+  headers_.Swap(&other->headers_);
   uidl_.Swap(&other->uidl_, &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
   ::PROTOBUF_NAMESPACE_ID::internal::memswap<
       PROTOBUF_FIELD_OFFSET(MailPreview, size_)
@@ -760,12 +764,17 @@ MailPreviewRequest::MailPreviewRequest(::PROTOBUF_NAMESPACE_ID::Arena* arena)
 MailPreviewRequest::MailPreviewRequest(const MailPreviewRequest& from)
   : ::PROTOBUF_NAMESPACE_ID::Message() {
   _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
-  id_ = from.id_;
+  ::memcpy(&pos_, &from.pos_,
+    static_cast<size_t>(reinterpret_cast<char*>(&len_) -
+    reinterpret_cast<char*>(&pos_)) + sizeof(len_));
   // @@protoc_insertion_point(copy_constructor:MailPreviewRequest)
 }
 
 void MailPreviewRequest::SharedCtor() {
-id_ = 0u;
+::memset(reinterpret_cast<char*>(this) + static_cast<size_t>(
+    reinterpret_cast<char*>(&pos_) - reinterpret_cast<char*>(this)),
+    0, static_cast<size_t>(reinterpret_cast<char*>(&len_) -
+    reinterpret_cast<char*>(&pos_)) + sizeof(len_));
 }
 
 MailPreviewRequest::~MailPreviewRequest() {
@@ -794,7 +803,9 @@ void MailPreviewRequest::Clear() {
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  id_ = 0u;
+  ::memset(&pos_, 0, static_cast<size_t>(
+      reinterpret_cast<char*>(&len_) -
+      reinterpret_cast<char*>(&pos_)) + sizeof(len_));
   _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
@@ -805,10 +816,17 @@ const char* MailPreviewRequest::_InternalParse(const char* ptr, ::PROTOBUF_NAMES
     ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
     CHK_(ptr);
     switch (tag >> 3) {
-      // uint32 id = 1;
+      // uint32 pos = 1;
       case 1:
         if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 8)) {
-          id_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint32(&ptr);
+          pos_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint32(&ptr);
+          CHK_(ptr);
+        } else goto handle_unusual;
+        continue;
+      // uint32 len = 2;
+      case 2:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 16)) {
+          len_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint32(&ptr);
           CHK_(ptr);
         } else goto handle_unusual;
         continue;
@@ -840,10 +858,16 @@ failure:
   ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
-  // uint32 id = 1;
-  if (this->id() != 0) {
+  // uint32 pos = 1;
+  if (this->pos() != 0) {
     target = stream->EnsureSpace(target);
-    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteUInt32ToArray(1, this->_internal_id(), target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteUInt32ToArray(1, this->_internal_pos(), target);
+  }
+
+  // uint32 len = 2;
+  if (this->len() != 0) {
+    target = stream->EnsureSpace(target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteUInt32ToArray(2, this->_internal_len(), target);
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
@@ -862,11 +886,18 @@ size_t MailPreviewRequest::ByteSizeLong() const {
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  // uint32 id = 1;
-  if (this->id() != 0) {
+  // uint32 pos = 1;
+  if (this->pos() != 0) {
     total_size += 1 +
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::UInt32Size(
-        this->_internal_id());
+        this->_internal_pos());
+  }
+
+  // uint32 len = 2;
+  if (this->len() != 0) {
+    total_size += 1 +
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::UInt32Size(
+        this->_internal_len());
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
@@ -900,8 +931,11 @@ void MailPreviewRequest::MergeFrom(const MailPreviewRequest& from) {
   ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
-  if (from.id() != 0) {
-    _internal_set_id(from._internal_id());
+  if (from.pos() != 0) {
+    _internal_set_pos(from._internal_pos());
+  }
+  if (from.len() != 0) {
+    _internal_set_len(from._internal_len());
   }
 }
 
@@ -926,7 +960,12 @@ bool MailPreviewRequest::IsInitialized() const {
 void MailPreviewRequest::InternalSwap(MailPreviewRequest* other) {
   using std::swap;
   _internal_metadata_.Swap<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(&other->_internal_metadata_);
-  swap(id_, other->id_);
+  ::PROTOBUF_NAMESPACE_ID::internal::memswap<
+      PROTOBUF_FIELD_OFFSET(MailPreviewRequest, len_)
+      + sizeof(MailPreviewRequest::len_)
+      - PROTOBUF_FIELD_OFFSET(MailPreviewRequest, pos_)>(
+          reinterpret_cast<char*>(&pos_),
+          reinterpret_cast<char*>(&other->pos_));
 }
 
 ::PROTOBUF_NAMESPACE_ID::Metadata MailPreviewRequest::GetMetadata() const {
@@ -942,14 +981,14 @@ class MailPreviewResponse::_Internal {
 
 MailPreviewResponse::MailPreviewResponse(::PROTOBUF_NAMESPACE_ID::Arena* arena)
   : ::PROTOBUF_NAMESPACE_ID::Message(arena),
-  mail_previews_(arena) {
+  mail_preview_(arena) {
   SharedCtor();
   RegisterArenaDtor(arena);
   // @@protoc_insertion_point(arena_constructor:MailPreviewResponse)
 }
 MailPreviewResponse::MailPreviewResponse(const MailPreviewResponse& from)
   : ::PROTOBUF_NAMESPACE_ID::Message(),
-      mail_previews_(from.mail_previews_) {
+      mail_preview_(from.mail_preview_) {
   _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
   // @@protoc_insertion_point(copy_constructor:MailPreviewResponse)
 }
@@ -983,7 +1022,7 @@ void MailPreviewResponse::Clear() {
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  mail_previews_.Clear();
+  mail_preview_.Clear();
   _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
@@ -994,13 +1033,13 @@ const char* MailPreviewResponse::_InternalParse(const char* ptr, ::PROTOBUF_NAME
     ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
     CHK_(ptr);
     switch (tag >> 3) {
-      // repeated .MailPreview mail_previews = 1;
+      // repeated .MailPreview mail_preview = 1;
       case 1:
         if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 10)) {
           ptr -= 1;
           do {
             ptr += 1;
-            ptr = ctx->ParseMessage(_internal_add_mail_previews(), ptr);
+            ptr = ctx->ParseMessage(_internal_add_mail_preview(), ptr);
             CHK_(ptr);
             if (!ctx->DataAvailable(ptr)) break;
           } while (::PROTOBUF_NAMESPACE_ID::internal::ExpectTag<10>(ptr));
@@ -1034,12 +1073,12 @@ failure:
   ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
-  // repeated .MailPreview mail_previews = 1;
+  // repeated .MailPreview mail_preview = 1;
   for (unsigned int i = 0,
-      n = static_cast<unsigned int>(this->_internal_mail_previews_size()); i < n; i++) {
+      n = static_cast<unsigned int>(this->_internal_mail_preview_size()); i < n; i++) {
     target = stream->EnsureSpace(target);
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
-      InternalWriteMessage(1, this->_internal_mail_previews(i), target, stream);
+      InternalWriteMessage(1, this->_internal_mail_preview(i), target, stream);
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
@@ -1058,9 +1097,9 @@ size_t MailPreviewResponse::ByteSizeLong() const {
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  // repeated .MailPreview mail_previews = 1;
-  total_size += 1UL * this->_internal_mail_previews_size();
-  for (const auto& msg : this->mail_previews_) {
+  // repeated .MailPreview mail_preview = 1;
+  total_size += 1UL * this->_internal_mail_preview_size();
+  for (const auto& msg : this->mail_preview_) {
     total_size +=
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(msg);
   }
@@ -1096,7 +1135,7 @@ void MailPreviewResponse::MergeFrom(const MailPreviewResponse& from) {
   ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
-  mail_previews_.MergeFrom(from.mail_previews_);
+  mail_preview_.MergeFrom(from.mail_preview_);
 }
 
 void MailPreviewResponse::CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
@@ -1120,7 +1159,7 @@ bool MailPreviewResponse::IsInitialized() const {
 void MailPreviewResponse::InternalSwap(MailPreviewResponse* other) {
   using std::swap;
   _internal_metadata_.Swap<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(&other->_internal_metadata_);
-  mail_previews_.InternalSwap(&other->mail_previews_);
+  mail_preview_.InternalSwap(&other->mail_preview_);
 }
 
 ::PROTOBUF_NAMESPACE_ID::Metadata MailPreviewResponse::GetMetadata() const {
@@ -1130,8 +1169,8 @@ void MailPreviewResponse::InternalSwap(MailPreviewResponse* other) {
 
 // @@protoc_insertion_point(namespace_scope)
 PROTOBUF_NAMESPACE_OPEN
-template<> PROTOBUF_NOINLINE ::MailPreview_HeaderEntry_DoNotUse* Arena::CreateMaybeMessage< ::MailPreview_HeaderEntry_DoNotUse >(Arena* arena) {
-  return Arena::CreateMessageInternal< ::MailPreview_HeaderEntry_DoNotUse >(arena);
+template<> PROTOBUF_NOINLINE ::MailPreview_HeadersEntry_DoNotUse* Arena::CreateMaybeMessage< ::MailPreview_HeadersEntry_DoNotUse >(Arena* arena) {
+  return Arena::CreateMessageInternal< ::MailPreview_HeadersEntry_DoNotUse >(arena);
 }
 template<> PROTOBUF_NOINLINE ::MailPreview* Arena::CreateMaybeMessage< ::MailPreview >(Arena* arena) {
   return Arena::CreateMessageInternal< ::MailPreview >(arena);

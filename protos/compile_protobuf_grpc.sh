@@ -1,4 +1,10 @@
 #!/usr/bin/env bash
+# dont run this file directly it's getting executed by meson build
+
+SCRIPTPATH="$( cd -- "$(dirname "$0")" >/dev/null 2>&1 ; pwd -P )"
+
+cd $SCRIPTPATH
+
 protoc --grpc_out=. --plugin=protoc-gen-grpc=`which grpc_cpp_plugin` pop3client.proto
 protoc --cpp_out=. pop3client.proto
 

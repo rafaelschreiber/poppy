@@ -70,39 +70,39 @@ extern MailPreviewRequestDefaultTypeInternal _MailPreviewRequest_default_instanc
 class MailPreviewResponse;
 struct MailPreviewResponseDefaultTypeInternal;
 extern MailPreviewResponseDefaultTypeInternal _MailPreviewResponse_default_instance_;
-class MailPreview_HeaderEntry_DoNotUse;
-struct MailPreview_HeaderEntry_DoNotUseDefaultTypeInternal;
-extern MailPreview_HeaderEntry_DoNotUseDefaultTypeInternal _MailPreview_HeaderEntry_DoNotUse_default_instance_;
+class MailPreview_HeadersEntry_DoNotUse;
+struct MailPreview_HeadersEntry_DoNotUseDefaultTypeInternal;
+extern MailPreview_HeadersEntry_DoNotUseDefaultTypeInternal _MailPreview_HeadersEntry_DoNotUse_default_instance_;
 PROTOBUF_NAMESPACE_OPEN
 template<> ::MailList* Arena::CreateMaybeMessage<::MailList>(Arena*);
 template<> ::MailPreview* Arena::CreateMaybeMessage<::MailPreview>(Arena*);
 template<> ::MailPreviewRequest* Arena::CreateMaybeMessage<::MailPreviewRequest>(Arena*);
 template<> ::MailPreviewResponse* Arena::CreateMaybeMessage<::MailPreviewResponse>(Arena*);
-template<> ::MailPreview_HeaderEntry_DoNotUse* Arena::CreateMaybeMessage<::MailPreview_HeaderEntry_DoNotUse>(Arena*);
+template<> ::MailPreview_HeadersEntry_DoNotUse* Arena::CreateMaybeMessage<::MailPreview_HeadersEntry_DoNotUse>(Arena*);
 PROTOBUF_NAMESPACE_CLOSE
 
 // ===================================================================
 
-class MailPreview_HeaderEntry_DoNotUse : public ::PROTOBUF_NAMESPACE_ID::internal::MapEntry<MailPreview_HeaderEntry_DoNotUse, 
+class MailPreview_HeadersEntry_DoNotUse : public ::PROTOBUF_NAMESPACE_ID::internal::MapEntry<MailPreview_HeadersEntry_DoNotUse, 
     std::string, std::string,
     ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::TYPE_STRING,
     ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::TYPE_STRING> {
 public:
-  typedef ::PROTOBUF_NAMESPACE_ID::internal::MapEntry<MailPreview_HeaderEntry_DoNotUse, 
+  typedef ::PROTOBUF_NAMESPACE_ID::internal::MapEntry<MailPreview_HeadersEntry_DoNotUse, 
     std::string, std::string,
     ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::TYPE_STRING,
     ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::TYPE_STRING> SuperType;
-  MailPreview_HeaderEntry_DoNotUse();
-  explicit constexpr MailPreview_HeaderEntry_DoNotUse(
+  MailPreview_HeadersEntry_DoNotUse();
+  explicit constexpr MailPreview_HeadersEntry_DoNotUse(
       ::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized);
-  explicit MailPreview_HeaderEntry_DoNotUse(::PROTOBUF_NAMESPACE_ID::Arena* arena);
-  void MergeFrom(const MailPreview_HeaderEntry_DoNotUse& other);
-  static const MailPreview_HeaderEntry_DoNotUse* internal_default_instance() { return reinterpret_cast<const MailPreview_HeaderEntry_DoNotUse*>(&_MailPreview_HeaderEntry_DoNotUse_default_instance_); }
+  explicit MailPreview_HeadersEntry_DoNotUse(::PROTOBUF_NAMESPACE_ID::Arena* arena);
+  void MergeFrom(const MailPreview_HeadersEntry_DoNotUse& other);
+  static const MailPreview_HeadersEntry_DoNotUse* internal_default_instance() { return reinterpret_cast<const MailPreview_HeadersEntry_DoNotUse*>(&_MailPreview_HeadersEntry_DoNotUse_default_instance_); }
   static bool ValidateKey(std::string* s) {
-    return ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(s->data(), static_cast<int>(s->size()), ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::PARSE, "MailPreview.HeaderEntry.key");
+    return ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(s->data(), static_cast<int>(s->size()), ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::PARSE, "MailPreview.HeadersEntry.key");
  }
   static bool ValidateValue(std::string* s) {
-    return ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(s->data(), static_cast<int>(s->size()), ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::PARSE, "MailPreview.HeaderEntry.value");
+    return ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(s->data(), static_cast<int>(s->size()), ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::PARSE, "MailPreview.HeadersEntry.value");
  }
   void MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& other) final;
   ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadata() const final;
@@ -231,27 +231,27 @@ class MailPreview PROTOBUF_FINAL :
   // accessors -------------------------------------------------------
 
   enum : int {
-    kHeaderFieldNumber = 4,
+    kHeadersFieldNumber = 4,
     kUidlFieldNumber = 3,
     kMailidFieldNumber = 1,
     kSizeFieldNumber = 2,
   };
-  // map<string, string> header = 4;
-  int header_size() const;
+  // map<string, string> headers = 4;
+  int headers_size() const;
   private:
-  int _internal_header_size() const;
+  int _internal_headers_size() const;
   public:
-  void clear_header();
+  void clear_headers();
   private:
   const ::PROTOBUF_NAMESPACE_ID::Map< std::string, std::string >&
-      _internal_header() const;
+      _internal_headers() const;
   ::PROTOBUF_NAMESPACE_ID::Map< std::string, std::string >*
-      _internal_mutable_header();
+      _internal_mutable_headers();
   public:
   const ::PROTOBUF_NAMESPACE_ID::Map< std::string, std::string >&
-      header() const;
+      headers() const;
   ::PROTOBUF_NAMESPACE_ID::Map< std::string, std::string >*
-      mutable_header();
+      mutable_headers();
 
   // string uidl = 3;
   void clear_uidl();
@@ -295,10 +295,10 @@ class MailPreview PROTOBUF_FINAL :
   typedef void InternalArenaConstructable_;
   typedef void DestructorSkippable_;
   ::PROTOBUF_NAMESPACE_ID::internal::MapField<
-      MailPreview_HeaderEntry_DoNotUse,
+      MailPreview_HeadersEntry_DoNotUse,
       std::string, std::string,
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::TYPE_STRING,
-      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::TYPE_STRING> header_;
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::TYPE_STRING> headers_;
   ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr uidl_;
   ::PROTOBUF_NAMESPACE_ID::uint32 mailid_;
   ::PROTOBUF_NAMESPACE_ID::uint32 size_;
@@ -568,15 +568,25 @@ class MailPreviewRequest PROTOBUF_FINAL :
   // accessors -------------------------------------------------------
 
   enum : int {
-    kIdFieldNumber = 1,
+    kPosFieldNumber = 1,
+    kLenFieldNumber = 2,
   };
-  // uint32 id = 1;
-  void clear_id();
-  ::PROTOBUF_NAMESPACE_ID::uint32 id() const;
-  void set_id(::PROTOBUF_NAMESPACE_ID::uint32 value);
+  // uint32 pos = 1;
+  void clear_pos();
+  ::PROTOBUF_NAMESPACE_ID::uint32 pos() const;
+  void set_pos(::PROTOBUF_NAMESPACE_ID::uint32 value);
   private:
-  ::PROTOBUF_NAMESPACE_ID::uint32 _internal_id() const;
-  void _internal_set_id(::PROTOBUF_NAMESPACE_ID::uint32 value);
+  ::PROTOBUF_NAMESPACE_ID::uint32 _internal_pos() const;
+  void _internal_set_pos(::PROTOBUF_NAMESPACE_ID::uint32 value);
+  public:
+
+  // uint32 len = 2;
+  void clear_len();
+  ::PROTOBUF_NAMESPACE_ID::uint32 len() const;
+  void set_len(::PROTOBUF_NAMESPACE_ID::uint32 value);
+  private:
+  ::PROTOBUF_NAMESPACE_ID::uint32 _internal_len() const;
+  void _internal_set_len(::PROTOBUF_NAMESPACE_ID::uint32 value);
   public:
 
   // @@protoc_insertion_point(class_scope:MailPreviewRequest)
@@ -586,7 +596,8 @@ class MailPreviewRequest PROTOBUF_FINAL :
   template <typename T> friend class ::PROTOBUF_NAMESPACE_ID::Arena::InternalHelper;
   typedef void InternalArenaConstructable_;
   typedef void DestructorSkippable_;
-  ::PROTOBUF_NAMESPACE_ID::uint32 id_;
+  ::PROTOBUF_NAMESPACE_ID::uint32 pos_;
+  ::PROTOBUF_NAMESPACE_ID::uint32 len_;
   mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
   friend struct ::TableStruct_pop3client_2eproto;
 };
@@ -705,25 +716,25 @@ class MailPreviewResponse PROTOBUF_FINAL :
   // accessors -------------------------------------------------------
 
   enum : int {
-    kMailPreviewsFieldNumber = 1,
+    kMailPreviewFieldNumber = 1,
   };
-  // repeated .MailPreview mail_previews = 1;
-  int mail_previews_size() const;
+  // repeated .MailPreview mail_preview = 1;
+  int mail_preview_size() const;
   private:
-  int _internal_mail_previews_size() const;
+  int _internal_mail_preview_size() const;
   public:
-  void clear_mail_previews();
-  ::MailPreview* mutable_mail_previews(int index);
+  void clear_mail_preview();
+  ::MailPreview* mutable_mail_preview(int index);
   ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::MailPreview >*
-      mutable_mail_previews();
+      mutable_mail_preview();
   private:
-  const ::MailPreview& _internal_mail_previews(int index) const;
-  ::MailPreview* _internal_add_mail_previews();
+  const ::MailPreview& _internal_mail_preview(int index) const;
+  ::MailPreview* _internal_add_mail_preview();
   public:
-  const ::MailPreview& mail_previews(int index) const;
-  ::MailPreview* add_mail_previews();
+  const ::MailPreview& mail_preview(int index) const;
+  ::MailPreview* add_mail_preview();
   const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::MailPreview >&
-      mail_previews() const;
+      mail_preview() const;
 
   // @@protoc_insertion_point(class_scope:MailPreviewResponse)
  private:
@@ -732,7 +743,7 @@ class MailPreviewResponse PROTOBUF_FINAL :
   template <typename T> friend class ::PROTOBUF_NAMESPACE_ID::Arena::InternalHelper;
   typedef void InternalArenaConstructable_;
   typedef void DestructorSkippable_;
-  ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::MailPreview > mail_previews_;
+  ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::MailPreview > mail_preview_;
   mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
   friend struct ::TableStruct_pop3client_2eproto;
 };
@@ -850,33 +861,33 @@ inline void MailPreview::set_allocated_uidl(std::string* uidl) {
   // @@protoc_insertion_point(field_set_allocated:MailPreview.uidl)
 }
 
-// map<string, string> header = 4;
-inline int MailPreview::_internal_header_size() const {
-  return header_.size();
+// map<string, string> headers = 4;
+inline int MailPreview::_internal_headers_size() const {
+  return headers_.size();
 }
-inline int MailPreview::header_size() const {
-  return _internal_header_size();
+inline int MailPreview::headers_size() const {
+  return _internal_headers_size();
 }
-inline void MailPreview::clear_header() {
-  header_.Clear();
-}
-inline const ::PROTOBUF_NAMESPACE_ID::Map< std::string, std::string >&
-MailPreview::_internal_header() const {
-  return header_.GetMap();
+inline void MailPreview::clear_headers() {
+  headers_.Clear();
 }
 inline const ::PROTOBUF_NAMESPACE_ID::Map< std::string, std::string >&
-MailPreview::header() const {
-  // @@protoc_insertion_point(field_map:MailPreview.header)
-  return _internal_header();
+MailPreview::_internal_headers() const {
+  return headers_.GetMap();
+}
+inline const ::PROTOBUF_NAMESPACE_ID::Map< std::string, std::string >&
+MailPreview::headers() const {
+  // @@protoc_insertion_point(field_map:MailPreview.headers)
+  return _internal_headers();
 }
 inline ::PROTOBUF_NAMESPACE_ID::Map< std::string, std::string >*
-MailPreview::_internal_mutable_header() {
-  return header_.MutableMap();
+MailPreview::_internal_mutable_headers() {
+  return headers_.MutableMap();
 }
 inline ::PROTOBUF_NAMESPACE_ID::Map< std::string, std::string >*
-MailPreview::mutable_header() {
-  // @@protoc_insertion_point(field_mutable_map:MailPreview.header)
-  return _internal_mutable_header();
+MailPreview::mutable_headers() {
+  // @@protoc_insertion_point(field_mutable_map:MailPreview.headers)
+  return _internal_mutable_headers();
 }
 
 // -------------------------------------------------------------------
@@ -927,67 +938,87 @@ inline void MailList::set_size(::PROTOBUF_NAMESPACE_ID::uint32 value) {
 
 // MailPreviewRequest
 
-// uint32 id = 1;
-inline void MailPreviewRequest::clear_id() {
-  id_ = 0u;
+// uint32 pos = 1;
+inline void MailPreviewRequest::clear_pos() {
+  pos_ = 0u;
 }
-inline ::PROTOBUF_NAMESPACE_ID::uint32 MailPreviewRequest::_internal_id() const {
-  return id_;
+inline ::PROTOBUF_NAMESPACE_ID::uint32 MailPreviewRequest::_internal_pos() const {
+  return pos_;
 }
-inline ::PROTOBUF_NAMESPACE_ID::uint32 MailPreviewRequest::id() const {
-  // @@protoc_insertion_point(field_get:MailPreviewRequest.id)
-  return _internal_id();
+inline ::PROTOBUF_NAMESPACE_ID::uint32 MailPreviewRequest::pos() const {
+  // @@protoc_insertion_point(field_get:MailPreviewRequest.pos)
+  return _internal_pos();
 }
-inline void MailPreviewRequest::_internal_set_id(::PROTOBUF_NAMESPACE_ID::uint32 value) {
+inline void MailPreviewRequest::_internal_set_pos(::PROTOBUF_NAMESPACE_ID::uint32 value) {
   
-  id_ = value;
+  pos_ = value;
 }
-inline void MailPreviewRequest::set_id(::PROTOBUF_NAMESPACE_ID::uint32 value) {
-  _internal_set_id(value);
-  // @@protoc_insertion_point(field_set:MailPreviewRequest.id)
+inline void MailPreviewRequest::set_pos(::PROTOBUF_NAMESPACE_ID::uint32 value) {
+  _internal_set_pos(value);
+  // @@protoc_insertion_point(field_set:MailPreviewRequest.pos)
+}
+
+// uint32 len = 2;
+inline void MailPreviewRequest::clear_len() {
+  len_ = 0u;
+}
+inline ::PROTOBUF_NAMESPACE_ID::uint32 MailPreviewRequest::_internal_len() const {
+  return len_;
+}
+inline ::PROTOBUF_NAMESPACE_ID::uint32 MailPreviewRequest::len() const {
+  // @@protoc_insertion_point(field_get:MailPreviewRequest.len)
+  return _internal_len();
+}
+inline void MailPreviewRequest::_internal_set_len(::PROTOBUF_NAMESPACE_ID::uint32 value) {
+  
+  len_ = value;
+}
+inline void MailPreviewRequest::set_len(::PROTOBUF_NAMESPACE_ID::uint32 value) {
+  _internal_set_len(value);
+  // @@protoc_insertion_point(field_set:MailPreviewRequest.len)
 }
 
 // -------------------------------------------------------------------
 
 // MailPreviewResponse
 
-// repeated .MailPreview mail_previews = 1;
-inline int MailPreviewResponse::_internal_mail_previews_size() const {
-  return mail_previews_.size();
+// repeated .MailPreview mail_preview = 1;
+inline int MailPreviewResponse::_internal_mail_preview_size() const {
+  return mail_preview_.size();
 }
-inline int MailPreviewResponse::mail_previews_size() const {
-  return _internal_mail_previews_size();
+inline int MailPreviewResponse::mail_preview_size() const {
+  return _internal_mail_preview_size();
 }
-inline void MailPreviewResponse::clear_mail_previews() {
-  mail_previews_.Clear();
+inline void MailPreviewResponse::clear_mail_preview() {
+  mail_preview_.Clear();
 }
-inline ::MailPreview* MailPreviewResponse::mutable_mail_previews(int index) {
-  // @@protoc_insertion_point(field_mutable:MailPreviewResponse.mail_previews)
-  return mail_previews_.Mutable(index);
+inline ::MailPreview* MailPreviewResponse::mutable_mail_preview(int index) {
+  // @@protoc_insertion_point(field_mutable:MailPreviewResponse.mail_preview)
+  return mail_preview_.Mutable(index);
 }
 inline ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::MailPreview >*
-MailPreviewResponse::mutable_mail_previews() {
-  // @@protoc_insertion_point(field_mutable_list:MailPreviewResponse.mail_previews)
-  return &mail_previews_;
+MailPreviewResponse::mutable_mail_preview() {
+  // @@protoc_insertion_point(field_mutable_list:MailPreviewResponse.mail_preview)
+  return &mail_preview_;
 }
-inline const ::MailPreview& MailPreviewResponse::_internal_mail_previews(int index) const {
-  return mail_previews_.Get(index);
+inline const ::MailPreview& MailPreviewResponse::_internal_mail_preview(int index) const {
+  return mail_preview_.Get(index);
 }
-inline const ::MailPreview& MailPreviewResponse::mail_previews(int index) const {
-  // @@protoc_insertion_point(field_get:MailPreviewResponse.mail_previews)
-  return _internal_mail_previews(index);
+inline const ::MailPreview& MailPreviewResponse::mail_preview(int index) const {
+  // @@protoc_insertion_point(field_get:MailPreviewResponse.mail_preview)
+  return _internal_mail_preview(index);
 }
-inline ::MailPreview* MailPreviewResponse::_internal_add_mail_previews() {
-  return mail_previews_.Add();
+inline ::MailPreview* MailPreviewResponse::_internal_add_mail_preview() {
+  return mail_preview_.Add();
 }
-inline ::MailPreview* MailPreviewResponse::add_mail_previews() {
-  // @@protoc_insertion_point(field_add:MailPreviewResponse.mail_previews)
-  return _internal_add_mail_previews();
+inline ::MailPreview* MailPreviewResponse::add_mail_preview() {
+  // @@protoc_insertion_point(field_add:MailPreviewResponse.mail_preview)
+  return _internal_add_mail_preview();
 }
 inline const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::MailPreview >&
-MailPreviewResponse::mail_previews() const {
-  // @@protoc_insertion_point(field_list:MailPreviewResponse.mail_previews)
-  return mail_previews_;
+MailPreviewResponse::mail_preview() const {
+  // @@protoc_insertion_point(field_list:MailPreviewResponse.mail_preview)
+  return mail_preview_;
 }
 
 #ifdef __GNUC__

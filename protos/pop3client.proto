@@ -6,7 +6,7 @@ message MailPreview {
   uint32 mailid = 1;
   uint32 size = 2;
   string uidl = 3;
-  map<string, string> header = 4;
+  map<string, string> headers = 4;
 }
 
 message MailList {
@@ -15,14 +15,16 @@ message MailList {
 }
 
 message MailPreviewRequest {
-  uint32 id = 1;
+  uint32 pos = 1;
+  uint32 len = 2;
 }
 
 message MailPreviewResponse {
-  repeated MailPreview mail_previews = 1;
+  repeated MailPreview mail_preview = 1;
 }
 
 service MailService {
   rpc GetMailList (google.protobuf.Empty) returns (MailList) {}
   rpc GetMailPreviews (MailPreviewRequest) returns (MailPreviewResponse) {}
+  rpc UpdateMailList (google.protobuf.Empty) returns (google.protobuf.Empty) {}
 }

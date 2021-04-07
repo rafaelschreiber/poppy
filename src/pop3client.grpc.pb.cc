@@ -23,6 +23,7 @@
 static const char* MailService_method_names[] = {
   "/MailService/GetMailList",
   "/MailService/GetMailPreviews",
+  "/MailService/UpdateMailList",
 };
 
 std::unique_ptr< MailService::Stub> MailService::NewStub(const std::shared_ptr< ::grpc::ChannelInterface>& channel, const ::grpc::StubOptions& options) {
@@ -34,6 +35,7 @@ std::unique_ptr< MailService::Stub> MailService::NewStub(const std::shared_ptr< 
 MailService::Stub::Stub(const std::shared_ptr< ::grpc::ChannelInterface>& channel)
   : channel_(channel), rpcmethod_GetMailList_(MailService_method_names[0], ::grpc::internal::RpcMethod::NORMAL_RPC, channel)
   , rpcmethod_GetMailPreviews_(MailService_method_names[1], ::grpc::internal::RpcMethod::NORMAL_RPC, channel)
+  , rpcmethod_UpdateMailList_(MailService_method_names[2], ::grpc::internal::RpcMethod::NORMAL_RPC, channel)
   {}
 
 ::grpc::Status MailService::Stub::GetMailList(::grpc::ClientContext* context, const ::google::protobuf::Empty& request, ::MailList* response) {
@@ -82,6 +84,29 @@ void MailService::Stub::experimental_async::GetMailPreviews(::grpc::ClientContex
   return result;
 }
 
+::grpc::Status MailService::Stub::UpdateMailList(::grpc::ClientContext* context, const ::google::protobuf::Empty& request, ::google::protobuf::Empty* response) {
+  return ::grpc::internal::BlockingUnaryCall< ::google::protobuf::Empty, ::google::protobuf::Empty, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(channel_.get(), rpcmethod_UpdateMailList_, context, request, response);
+}
+
+void MailService::Stub::experimental_async::UpdateMailList(::grpc::ClientContext* context, const ::google::protobuf::Empty* request, ::google::protobuf::Empty* response, std::function<void(::grpc::Status)> f) {
+  ::grpc::internal::CallbackUnaryCall< ::google::protobuf::Empty, ::google::protobuf::Empty, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(stub_->channel_.get(), stub_->rpcmethod_UpdateMailList_, context, request, response, std::move(f));
+}
+
+void MailService::Stub::experimental_async::UpdateMailList(::grpc::ClientContext* context, const ::google::protobuf::Empty* request, ::google::protobuf::Empty* response, ::grpc::experimental::ClientUnaryReactor* reactor) {
+  ::grpc::internal::ClientCallbackUnaryFactory::Create< ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(stub_->channel_.get(), stub_->rpcmethod_UpdateMailList_, context, request, response, reactor);
+}
+
+::grpc::ClientAsyncResponseReader< ::google::protobuf::Empty>* MailService::Stub::PrepareAsyncUpdateMailListRaw(::grpc::ClientContext* context, const ::google::protobuf::Empty& request, ::grpc::CompletionQueue* cq) {
+  return ::grpc::internal::ClientAsyncResponseReaderHelper::Create< ::google::protobuf::Empty, ::google::protobuf::Empty, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(channel_.get(), cq, rpcmethod_UpdateMailList_, context, request);
+}
+
+::grpc::ClientAsyncResponseReader< ::google::protobuf::Empty>* MailService::Stub::AsyncUpdateMailListRaw(::grpc::ClientContext* context, const ::google::protobuf::Empty& request, ::grpc::CompletionQueue* cq) {
+  auto* result =
+    this->PrepareAsyncUpdateMailListRaw(context, request, cq);
+  result->StartCall();
+  return result;
+}
+
 MailService::Service::Service() {
   AddMethod(new ::grpc::internal::RpcServiceMethod(
       MailService_method_names[0],
@@ -103,6 +128,16 @@ MailService::Service::Service() {
              ::MailPreviewResponse* resp) {
                return service->GetMailPreviews(ctx, req, resp);
              }, this)));
+  AddMethod(new ::grpc::internal::RpcServiceMethod(
+      MailService_method_names[2],
+      ::grpc::internal::RpcMethod::NORMAL_RPC,
+      new ::grpc::internal::RpcMethodHandler< MailService::Service, ::google::protobuf::Empty, ::google::protobuf::Empty, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(
+          [](MailService::Service* service,
+             ::grpc::ServerContext* ctx,
+             const ::google::protobuf::Empty* req,
+             ::google::protobuf::Empty* resp) {
+               return service->UpdateMailList(ctx, req, resp);
+             }, this)));
 }
 
 MailService::Service::~Service() {
@@ -116,6 +151,13 @@ MailService::Service::~Service() {
 }
 
 ::grpc::Status MailService::Service::GetMailPreviews(::grpc::ServerContext* context, const ::MailPreviewRequest* request, ::MailPreviewResponse* response) {
+  (void) context;
+  (void) request;
+  (void) response;
+  return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+}
+
+::grpc::Status MailService::Service::UpdateMailList(::grpc::ServerContext* context, const ::google::protobuf::Empty* request, ::google::protobuf::Empty* response) {
   (void) context;
   (void) request;
   (void) response;
