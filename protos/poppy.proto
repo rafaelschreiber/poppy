@@ -1,0 +1,49 @@
+syntax = "proto3";
+
+message MailPreview {
+  uint32 mailid = 1;
+  uint32 size = 2;
+  string uidl = 3;
+  map<string, string> headers = 4;
+}
+
+message MailBoxInfo {
+  string account = 1;
+  uint32 length = 2;
+  uint32 size = 3;
+}
+
+message MailPreviewRequest {
+  uint32 pos = 1;
+  uint32 len = 2;
+}
+
+message MailPreviewResponse {
+  repeated MailPreview mail_preview = 1;
+}
+
+message StatusResponse {
+  bool success = 1;
+}
+
+message SpecifiedMail {
+  string uidl = 1;
+}
+
+message DownloadedMail {
+  bool success = 1;
+  string mailcontent = 2;
+}
+
+// this matches exactly the declaration of google's one
+message Empty {}
+
+service MailService {
+  rpc GetMailBoxInfo (Empty) returns (MailBoxInfo) {}
+  rpc GetMailPreviews (MailPreviewRequest) returns (MailPreviewResponse) {}
+  rpc UpdateMailbox (Empty) returns (StatusResponse) {}
+  rpc DeleteMail (SpecifiedMail) returns (StatusResponse) {}
+  rpc ResetMailbox (Empty) returns (StatusResponse) {}
+  rpc DownloadMail (SpecifiedMail) returns (DownloadedMail) {}
+  rpc ExitApplication (Empty) returns (Empty) {}
+}

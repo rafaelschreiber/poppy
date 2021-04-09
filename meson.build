@@ -2,7 +2,7 @@
 project('pop3client_29', 'cpp',
         license : ['Boost'],
         version : '0.4',
-        default_options : ['cpp_std=c++17', 'warning_level=3', 'werror=false', ])
+        default_options : ['cpp_std=c++17', 'warning_level=3', 'werror=false'])
 
 # thread_dep = dependency('threads')
 gnutls_dep = dependency('gnutls')
@@ -22,9 +22,6 @@ add_global_arguments('-I' + get_option('spdlog_include_dir'), language : 'cpp')
 # json: https://github.com/nlohmann/json
 add_global_arguments('-I' + get_option('json_include_dir'), language : 'cpp')
 
-# tabulate: https://github.com/p-ranav/tabulate
-add_global_arguments('-I' + get_option('tabulate_include_dir'), language : 'cpp')
-
 # tfile: https://github.com/rec/tfile
 add_global_arguments('-I' + get_option('tfile_include_dir'), language : 'cpp')
 
@@ -33,9 +30,10 @@ run_command('protos/compile_protobuf_grpc.sh')
 
 inc_dir = include_directories('include')
 src = ['src/main.cpp', 'src/mailbox.cpp', 'src/pop3socket.cpp', 
-       'src/pystring.cpp', 'src/pop3client.pb.cc', 'src/pop3client.grpc.pb.cc']
+       'src/pystring.cpp', 'src/poppy.pb.cc', 'src/poppy.grpc.pb.cc',
+       'src/mailservice.cpp', 'src/globals.cpp']
 
-executable('pop3client',
+executable('poppy',
            sources : src,
            include_directories : inc_dir,
            dependencies : [gnutls_dep, mailutils_dep, protobuf_dep, grpc_dep]

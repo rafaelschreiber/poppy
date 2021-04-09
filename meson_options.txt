@@ -1,5 +1,4 @@
 option('cli11_include_dir', type : 'string', value : '/usr/local/include', description : 'the dir containing CLI11.hpp')
 option('json_include_dir', type : 'string', value : '/usr/local/include', description : 'the include dir of json')
 option('spdlog_include_dir', type : 'string', value : '/usr/local/include', description : 'the include dir of spdlog')
-option('tabulate_include_dir', type : 'string', value : '/usr/local/include', description : 'the dir containing tabulate.hpp')
 option('tfile_include_dir', type : 'string', value : '/usr/local/include', description : 'the dir containing tfile.h')

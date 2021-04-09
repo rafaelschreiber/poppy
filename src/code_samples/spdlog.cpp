@@ -1,6 +1,7 @@
 
 #include "spdlog/spdlog.h"
 #include "spdlog/sinks/stdout_color_sinks.h"
+#include "spdlog/sinks/syslog_sink.h"
 
 int main() {
     // stdout_logger_st, stderr_logger_mt, stderr_logger_st  

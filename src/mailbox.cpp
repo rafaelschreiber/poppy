@@ -11,18 +11,16 @@
 #include <vector>
 #include <algorithm>
 
-#include <tabulate.hpp>
-
 #include "pop3socket.h"
+#include "globals.h"
+
 #include "mailbox.h"
 
 using namespace std;
-using namespace tabulate;
 
 Mailbox::Mailbox(string hostname, uint16_t port, string user, string pass, bool encrypted){
     std::ostringstream oss;
     pop3sess.fill_endpoint(hostname, port, encrypted);
-    if (DEBUG) { pop3sess.switch_debug(); }
     int connect_status = pop3sess.connect();
     if (connect_status != 0){
         oss << "PROTOCOL_ERR: Cannot connect to server " << hostname << ":" << port << endl;
@@ -86,4 +84,39 @@ int Mailbox::complete_mail_metadata(size_t pos, size_t len) {
 mail_t Mailbox::get_email(size_t pos){
     if (pos + 1 > _mail_list.size()) { return mail_t(); }
     return _mail_list.at(pos);
+}
+
+int Mailbox::_uidl_to_mailid(string uidl){
+    for (size_t i = 0; i < _mail_list.size(); i++) {
+        if (_mail_list.at(i).uidl() == uidl){
+            return _mail_list.at(i).id();
+        }
+    }
+    return -1;
+}
+
+
+int Mailbox::resetMailbox() {
+    int status = pop3sess.reset_mailbox();
+    return status;
+}
+
+
+int Mailbox::delete_mail(string uidl){
+    int mailid = _uidl_to_mailid(uidl);
+    if (mailid == -1){
+        return UIDL_NOT_FOUND;
+    }
+    int status = pop3sess.delete_mail(mailid);
+    return status;
+}
+
+
+int Mailbox::download_mail(string uidl, string *mail_content){
+    int mailid = _uidl_to_mailid(uidl);
+    if (mailid == -1){
+        return UIDL_NOT_FOUND;
+    }
+    int status = pop3sess.download_mail(mailid, mail_content);
+    return status;
 }

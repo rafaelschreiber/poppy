@@ -8,7 +8,7 @@
 #ifndef MAILBOX_H
 #define MAILBOX_H
 
-#define DEBUG false
+#define DEBUG true
 
 #include <string>
 #include "pop3socket.h"
@@ -19,6 +19,7 @@ class Mailbox {
 private:
     vector<mail_t> _mail_list;
     uint32_t _mailbox_size{0};
+    int _uidl_to_mailid(string uidl);
 
 public:
     Pop3socket pop3sess{};
@@ -28,8 +29,9 @@ public:
     uint32_t get_mailbox_size() { return _mailbox_size; }
     int complete_mail_metadata(size_t pos, size_t len);
     mail_t get_email(size_t pos);
-    void print_mails();
-
+    int delete_mail(string uidl);
+    int resetMailbox();
+    int download_mail(string uidl, string *mail_content);
 };
 
 #endif // MAILBOX_H

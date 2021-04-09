@@ -25,6 +25,7 @@
 #define ALREADY_LOGGED_IN_ERR 7
 #define WRONG_CREDENTIALS_ERR 8
 #define NOT_LOGGED_IN_ERR 9
+#define UIDL_NOT_FOUND 10
 
 using namespace std;
 
@@ -88,7 +89,6 @@ private:
     bool _is_encrypted{};
     bool _session_up{false};
     bool _is_logged_in{false};
-    bool _debug_on{false};
     gnutls_session_t _sess{};
     gnutls_certificate_credentials_t _xcred{};
 
@@ -109,11 +109,13 @@ public:
     void fill_endpoint(string hostname, uint16_t port, bool is_encrypted);
     int get_mails(vector<mail_t> &mails);
     int connect();
-    void switch_debug();
     int login(string username, string password);
     int complete_mail(mail_t *mail);
     bool ping();
     int get_stats(stat_t *status);
+    int reset_mailbox();
+    int delete_mail(uint16_t mailid);
+    int download_mail(uint16_t mailid, string *mail_content);
     ~Pop3socket();
 };
 

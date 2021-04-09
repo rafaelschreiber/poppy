@@ -21,6 +21,8 @@
 #include "pystring.h"
 #include <mailutils/mime.h>
 
+#include "globals.h"
+
 #include "pop3socket.h"
 
 using namespace std;
@@ -41,12 +43,14 @@ void Pop3socket::fill_endpoint(string hostname, uint16_t port, bool is_encrypted
 
 int Pop3socket::_resolve_name() {
     hostent *resolved_host = gethostbyname(_hostname.c_str());
-    if(resolved_host == nullptr){
+    if (resolved_host == nullptr){
+        logger->error("Name resolution failed. Cannot resolve hostname: {}", _hostname);
         return RESOLV_ERR;
     }
-    in_addr **ip_addr_ptr = (struct in_addr **)resolved_host->h_addr_list;
+    in_addr **ip_addr_ptr = (struct in_addr **) resolved_host->h_addr_list;
     _addr_family = resolved_host->h_addrtype;
     _ip_addr = inet_ntoa(*ip_addr_ptr[0]);
+    logger->debug("Resolved name {} to IP address: {}", _hostname, (string) _ip_addr);
     return SUCCESS;
 }
 
@@ -59,12 +63,15 @@ int Pop3socket::_create_bsd_socket() {
     inet_pton(_addr_family, _ip_addr.c_str(), &_socket_address.sin_addr);
     int err = ::connect(_socket_descriptor, (struct sockaddr *) &_socket_address, sizeof(_socket_address));
 
-    int ret = (err == 0) ? SUCCESS : SOCKET_ERR;
-    return ret;
+    if (err != SUCCESS) { 
+        logger->error("Couldn't establish connection to server {}:{}", _hostname, _port);
+        return err;
+    }
+    logger->debug("Successfully created socket connected with {}:{}", _hostname, _port);
+    return SUCCESS;
 }
 
 int Pop3socket::_setup_gnutls() {
-
     gnutls_global_init();
     gnutls_certificate_allocate_credentials(&_xcred);
     gnutls_certificate_set_x509_system_trust(_xcred);
@@ -81,17 +88,20 @@ int Pop3socket::_setup_gnutls() {
     gnutls_handshake_set_timeout(_sess, GNUTLS_DEFAULT_HANDSHAKE_TIMEOUT);
 
     int err_handshake = gnutls_handshake(_sess);
-    if (_debug_on) { cout << gnutls_session_get_desc(_sess) << endl; }
-    int ret = (err_handshake == 0) ? SUCCESS : TLS_HANDSHAKE_ERR;
-    return ret;
+    if (err_handshake != SUCCESS) {
+        logger->error("Cannot establish TLS handshake with server {}:{}", _hostname, _port);
+        return err_handshake;
+    }
+    logger->debug("Established GnuTLS handshake: {}", gnutls_session_get_desc(_sess));
+    return SUCCESS;
 }
 
 int Pop3socket::connect() {
     int ret_resolv = _resolve_name();
-    if(ret_resolv != 0){ return ret_resolv; }
+    if (ret_resolv != 0) { return ret_resolv; }
 
     int ret_socket = _create_bsd_socket();
-    if(ret_socket != 0){ return ret_socket; }
+    if (ret_socket != 0) { return ret_socket; }
 
     if (_is_encrypted){
         int ret_gnutls = _setup_gnutls();
@@ -100,31 +110,36 @@ int Pop3socket::connect() {
 
     if(_recv().substr(0, 3) == "+OK"){
         _session_up = true;
+        logger->debug("POP3 session established. Got +OK from server");
         return SUCCESS;
     } else {
+        logger->error("Couldn't establish a POP3 session. Is the server speaking POP3?");
         return PROTOCOL_ERR;
     }
 }
 
 int Pop3socket::login(string username, string password) {
-    if(!_session_up){ return NOT_CONNECTED_ERR; }
-    if(_is_logged_in){ return ALREADY_LOGGED_IN_ERR; }
+    if (!_session_up) { return NOT_CONNECTED_ERR; }
+    if (_is_logged_in) { return ALREADY_LOGGED_IN_ERR; }
     _send("USER " + username);
-    if(_recv().substr(0, 3) == "-ERR") { return PROTOCOL_ERR; }
+    if (_recv().substr(0, 3) == "-ERR") {
+        logger->error("Protocol error. Maybe the pipe is broken?"); 
+        return PROTOCOL_ERR; 
+    }
+
     _send("PASS " + password);
     string auth_response = _recv();
-    if(auth_response.substr(0, 3) == "+OK"){
+    if (auth_response.substr(0, 3) == "+OK") {
         _is_logged_in = true;
+        logger->debug("Successfully authenticated user {} on server {}:{}", username, _hostname, _port);
         return SUCCESS;
     } else if (auth_response.substr(0, 11) == "-ERR [AUTH]"){
+        logger->error("Login failed. Wrong credentials for user: {} provided", username);
         return WRONG_CREDENTIALS_ERR;
     } else {
+        logger->error("Protocol error. Maybe the pipe is broken?");
         return PROTOCOL_ERR;
     }
-}
-
-void Pop3socket::switch_debug() {
-    _debug_on = !_debug_on;
 }
 
 bool Pop3socket::ping(){
@@ -133,8 +148,10 @@ bool Pop3socket::ping(){
     _send("NOOP");
     string noop_response = _recv();
     if(noop_response.substr(0, 3) == "+OK"){
+        logger->debug("Got ping back from {}:{}", _hostname, _port);
         return true;
     } else {
+        logger->error("Background ping for {}:{} failed. Maybe the pipe is broken?", _hostname, _port);
         return false;
     }
 }
@@ -227,6 +244,43 @@ string Pop3socket::_get_uidl(uint16_t mailid) {
     return return_uidl.erase(return_uidl.length() - 2);
 }
 
+int Pop3socket::delete_mail(uint16_t mailid) {
+    if(!_session_up){ return NOT_CONNECTED_ERR; }
+    if(!_is_logged_in){ return NOT_LOGGED_IN_ERR; }
+    _send("DELE " + to_string(mailid));
+    string dele_response = _recv();
+    vector<string> dele_data;
+    pystring::split(dele_response, dele_data, " ");
+    if (dele_data.at(0) != "+OK") {
+        return PROTOCOL_ERR;
+    }
+    return SUCCESS;
+}
+
+int Pop3socket::reset_mailbox() {
+    if(!_session_up){ return NOT_CONNECTED_ERR; }
+    if(!_is_logged_in){ return NOT_LOGGED_IN_ERR; }
+    _send("RSET");
+    string rset_response = _recv();
+    if (rset_response.substr(0, 3) != "+OK") {
+        return PROTOCOL_ERR;
+    }
+    return SUCCESS;
+}
+
+int Pop3socket::download_mail(uint16_t mailid, string *mail_content) {
+    if(!_session_up){ return NOT_CONNECTED_ERR; }
+    if(!_is_logged_in){ return NOT_LOGGED_IN_ERR; }
+    _send("RETR " + to_string(mailid));
+    *mail_content = _recv_to_end();
+    if (mail_content->substr(0, 3) != "+OK") {
+        return PROTOCOL_ERR;
+    }
+    mail_content->erase(0, mail_content->find("\n") + 1);
+    mail_content->pop_back();
+    return SUCCESS;
+}
+
 int Pop3socket::get_stats(stat_t *status){
     if(!_session_up){ return NOT_CONNECTED_ERR; }
     if(!_is_logged_in){ return NOT_LOGGED_IN_ERR; }
@@ -263,10 +317,15 @@ string Pop3socket::_recv_to_end(){
         memset(buf, 0, sizeof(buf));
         full_recv += seg;
     }
-    if (_debug_on) { cout << "recv: " << full_recv << endl; }
+    if (debug) {
+        size_t n = 20;
+        if (full_recv.size() <= n) {
+            n = full_recv.size() - 1;
+        }
+        logger->debug("-> {}", full_recv.substr(full_recv.length() - n));
+    }
     return full_recv;
 }
-
 
 string Pop3socket::_recv(){
     char buf[512]{};
@@ -279,7 +338,7 @@ string Pop3socket::_recv(){
         if (strlen(buf) != 0){ break; }
     }
     string ret_recv = buf;
-    if (_debug_on) { cout << "recv: " << ret_recv << endl; }
+    logger->debug("-> {}", ret_recv.substr(0, ret_recv.size() - 2));
     return ret_recv;
 
 }
@@ -287,7 +346,6 @@ string Pop3socket::_recv(){
 int Pop3socket::_send(string msg){
     msg += "\r\n";
     const char *data = msg.c_str();
-    if (_debug_on) { cout << "send: " << msg << endl; }
     unsigned int strlen = msg.length();
     int status{};
     if(_is_encrypted){
@@ -295,7 +353,10 @@ int Pop3socket::_send(string msg){
     } else {
         status = send(_socket_descriptor, data, strlen, 0);
     }
-    if(status >= 0){ return SUCCESS; }
+    if(status >= 0) {
+        logger->debug("<- {}", msg.substr(0, msg.size() - 2));
+        return SUCCESS; 
+    }
     return SEND_ERR;
 }
 

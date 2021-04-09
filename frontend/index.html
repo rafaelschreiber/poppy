@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link rel="stylesheet" href="css/index.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="js/dist/main.js"></script>
+    <title>POPpy Mailbox</title>
+</head>
+
+<body id="main-body" style="background-color: #231F20;">
+    </script>
+    <header>
+        <nav>
+            <div id="navbar">
+                <a href="index.html"><img src="img/poppy_logo.png" id="logo" alt="poppy_logo" height="50px" width="50px"></a>
+                <span id="product-name">POPpy POP3 Client</span>
+                <div class="spacer"></div>
+                <span id="account-name">[account-name]</span>
+                <div class="spacer"></div>
+                <button onclick="ext.update_mailbox()" type="button" class="btn btn-nav btn-primary"><i class="fas fa-sync "></i></button>
+                <button onclick="ext.reset_trash()" type="button" class="btn btn-nav btn-success"><i class="fas fa-trash-restore"></i></button>
+                <button onclick="ext.exit_application();closeWindow()" type="button" class="btn btn-nav btn-danger"><i class="fas fa-sign-out-alt"></i></button>
+            </div>
+        </nav>
+    </header>
+
+    <div id="table-responsive">
+        <div id="mailbox-data">
+            <span>email count:&nbsp;<span id="email-count">[email-count]</span></span>
+            <div class="spacer"></div>
+            <span>mailbox size:&nbsp;<span id="mailbox-size">[mailbox-size]</span>&nbspBytes</span>
+        </div>
+        <table class="table table-striped table-dark">
+            <thead>
+            <tr>
+                <th style="width: 80px;" scope="col">MailID</th>
+                <th scope="col">Subject</th>
+                <th scope="col">Sender</th>
+                <th scope="col">Date</th>
+                <th style="width: 115px;" scope="col">Actions</th>
+            </tr>
+            </thead>
+            <tbody id="table-body">
+            </tbody>
+        </table>
+
+        <div id="loading-spinner">
+            <div class="lds-spinner"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
+        </div>
+
+        <div id="pager">
+            <a onclick="ext.prev_page()" id="prev-link"><span id="prev-page"><i class="fas fa-backward"></i>&nbsp;&nbsp;Previous</span></a>
+            <div class="spacer"></div>
+            Page&nbsp<span id="current-page">[current-page]</span>&nbspof&nbsp<span id="available-pages">[available-pages]</span>
+            <div class="spacer"></div>
+            <a onclick="ext.next_page()" id="next-link"><span id="next-page">Next&nbsp;&nbsp;<i class="fas fa-forward"></i></span></a>
+        </div>
+    </div>
+
+    <footer>
+        <div class="footer">
+            <p>Made with ❤️ by Rafael Schreiber (April 2021)</p>
+        </div>
+    </footer>
+</body>
+</html>

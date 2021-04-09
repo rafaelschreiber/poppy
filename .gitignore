@@ -48,6 +48,15 @@ venv/
 *.toc
 _minted-main/
 
+# Compiled protobuf files
+*.pb.*
+*_pb.*
+*_pb2.*
+
+# npm stuff
+node_modules/
+dist/
+
 # macOS Ranz
 ._*
 .DS_Store
