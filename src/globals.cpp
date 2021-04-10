@@ -6,9 +6,7 @@
  */
 
 #include <string>
-#include <ctime>
-#include <unistd.h>
-#include <vector>
+#include <memory>
 
 #include <spdlog/sinks/stdout_color_sinks.h>
 
@@ -26,3 +24,4 @@ using namespace std;
 
 shared_ptr<spdlog::logger> logger = spdlog::stdout_color_mt("poppy");
 bool debug = true;
+string prefix = __PREFIX__;

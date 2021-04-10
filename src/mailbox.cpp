@@ -7,7 +7,7 @@
 
 #include <iostream>
 #include <string>
-#include <sstream>
+#include <exception>
 #include <vector>
 #include <algorithm>
 
@@ -18,33 +18,27 @@
 
 using namespace std;
 
-Mailbox::Mailbox(string hostname, uint16_t port, string user, string pass, bool encrypted){
-    std::ostringstream oss;
-    pop3sess.fill_endpoint(hostname, port, encrypted);
-    int connect_status = pop3sess.connect();
-    if (connect_status != 0){
-        oss << "PROTOCOL_ERR: Cannot connect to server " << hostname << ":" << port << endl;
-        throw oss.str();
+int Mailbox::connect_mailbox(string hostname, uint16_t port, string user, string pass, bool encrypted){
+    _pop3sess.fill_endpoint(hostname, port, encrypted);
+    int connect_status = _pop3sess.connect();
+    if (connect_status != SUCCESS) {
+        logger->error("An error occurred while connecting to {}:{}", hostname, port);
+        return connect_status;
     }
 
-    int login_status = pop3sess.login(user, pass);
-    if (login_status != 0){
-        switch (login_status) {
-            case PROTOCOL_ERR:
-                oss << "PROTOCOL_ERR: Login protocol not satisfied" << endl;
-                throw oss.str();
-            case WRONG_CREDENTIALS_ERR:
-                oss << "WRONG_CREDENTIALS_ERR: Wrong credentials for user " << user << " specified" << endl;
-                throw oss.str();
-        }
+    int login_status = _pop3sess.login(user, pass);
+    if (login_status != SUCCESS) {
+        logger->error("An error occurred during authentication on {} at {}:{}", user, hostname, port); 
+        return login_status;
     }
     update_maillist();
+    return SUCCESS;
 }
 
 
 int Mailbox::update_maillist() {
     vector<mail_t> new_mails_list;
-    int status = pop3sess.get_mails(new_mails_list);
+    int status = _pop3sess.get_mails(new_mails_list);
     if (status != SUCCESS) { return status; }
     reverse(_mail_list.begin(), _mail_list.end());
     
@@ -73,7 +67,7 @@ int Mailbox::complete_mail_metadata(size_t pos, size_t len) {
     for (size_t i = 0; i < len; i++){
         if (mail_ptr == nullptr) { break; }
         if (mail_ptr->uidl().length() == 0) {
-            int status = pop3sess.complete_mail(mail_ptr);
+            int status = _pop3sess.complete_mail(mail_ptr);
             if (status != SUCCESS) { return status; }
         }
         mail_ptr++;
@@ -96,8 +90,8 @@ int Mailbox::_uidl_to_mailid(string uidl){
 }
 
 
-int Mailbox::resetMailbox() {
-    int status = pop3sess.reset_mailbox();
+int Mailbox::reset_mailbox() {
+    int status = _pop3sess.reset_mailbox();
     return status;
 }
 
@@ -105,9 +99,9 @@ int Mailbox::resetMailbox() {
 int Mailbox::delete_mail(string uidl){
     int mailid = _uidl_to_mailid(uidl);
     if (mailid == -1){
-        return UIDL_NOT_FOUND;
+        return UIDL_NOT_FOUND_ERR;
     }
-    int status = pop3sess.delete_mail(mailid);
+    int status = _pop3sess.delete_mail(mailid);
     return status;
 }
 
@@ -115,8 +109,8 @@ int Mailbox::delete_mail(string uidl){
 int Mailbox::download_mail(string uidl, string *mail_content){
     int mailid = _uidl_to_mailid(uidl);
     if (mailid == -1){
-        return UIDL_NOT_FOUND;
+        return UIDL_NOT_FOUND_ERR;
     }
-    int status = pop3sess.download_mail(mailid, mail_content);
+    int status = _pop3sess.download_mail(mailid, mail_content);
     return status;
 }

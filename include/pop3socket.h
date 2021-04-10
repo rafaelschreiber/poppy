@@ -15,26 +15,7 @@
 #include <netinet/in.h>
 #include <gnutls/gnutls.h>
 
-#define SUCCESS 0
-#define RESOLV_ERR 1
-#define SOCKET_ERR 2
-#define TLS_HANDSHAKE_ERR 3
-#define PROTOCOL_ERR 4
-#define SEND_ERR 5
-#define NOT_CONNECTED_ERR 6
-#define ALREADY_LOGGED_IN_ERR 7
-#define WRONG_CREDENTIALS_ERR 8
-#define NOT_LOGGED_IN_ERR 9
-#define UIDL_NOT_FOUND 10
-
 using namespace std;
-
-/*
- * Ich liebe nicht standartisierte Datestrings :))
- * Date: Tue,  9 Mar 2021 22:17:58 +0100 (CET) # postfix ubuntu
- * Date: 8 Jan 2020 03:31:07 -0500 # fortimail
- * Date: Sat, 18 Jun 2016 16:45:44 +0000 # Google Mail
- */
 
 class mail_t {
 private:

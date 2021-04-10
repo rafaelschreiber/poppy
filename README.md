@@ -21,11 +21,11 @@
 **Note: CLI11, json, spdlog tabulate and tfile must be present in the include folder!**
 
 ```sh
-$ https://github.com/rafaelschreiber/schreiber_project_2
+$ git clone https://github.com/rafaelschreiber/schreiber_project_2
 $ cd schreiber_project_2/build
-$ meson ..
-$ ninja
-$ ./pop3client
+$ meson .. # default prefix is /usr/local use '--prefix /wished/prefix/path' to set a custom path
+$ meson install
+$ poppy
 ```
 
 Compilation was tested on the following platforms:

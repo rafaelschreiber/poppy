@@ -43,7 +43,7 @@ void Pop3socket::fill_endpoint(string hostname, uint16_t port, bool is_encrypted
 
 int Pop3socket::_resolve_name() {
     hostent *resolved_host = gethostbyname(_hostname.c_str());
-    if (resolved_host == nullptr){
+    if (resolved_host == nullptr) {
         logger->error("Name resolution failed. Cannot resolve hostname: {}", _hostname);
         return RESOLV_ERR;
     }
@@ -318,11 +318,11 @@ string Pop3socket::_recv_to_end(){
         full_recv += seg;
     }
     if (debug) {
-        size_t n = 20;
-        if (full_recv.size() <= n) {
-            n = full_recv.size() - 1;
+        size_t n = 15;
+        if (n > full_recv.size()) {
+            n = full_recv.size();
         }
-        logger->debug("-> {}", full_recv.substr(full_recv.length() - n));
+        logger->debug("-> {}", full_recv.substr(0, n) + "...");
     }
     return full_recv;
 }
