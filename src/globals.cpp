@@ -5,12 +5,12 @@
  * Date: 09-04-2021
  */
 
-#include <string>
-#include <memory>
+#include "globals.h"
 
 #include <spdlog/sinks/stdout_color_sinks.h>
 
-#include "globals.h"
+#include <string>
+#include <memory>
 
 using namespace std;
 
@@ -22,6 +22,8 @@ using namespace std;
      Platform current_platform = ELSE;
 #endif
 
+string prefix = __PREFIX__; // compiler macro for installation prefix
 shared_ptr<spdlog::logger> logger = spdlog::stdout_color_mt("poppy");
 bool debug = true;
-string prefix = __PREFIX__;
+int shutdown_initiated = 0; // indicator if shutdown procedure started
+bool envoy_error = false; // true if envoy crashes

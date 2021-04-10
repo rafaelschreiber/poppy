@@ -1,3 +1,10 @@
+/*
+ * Author: Rafael Schreiber (i16066)
+ * Project: pop3client_29
+ * File: poppy.proto
+ * Date: 03-04-2021
+ */
+
 syntax = "proto3";
 
 message MailPreview {
@@ -45,5 +52,5 @@ service MailService {
   rpc DeleteMail (SpecifiedMail) returns (StatusResponse) {}
   rpc ResetMailbox (Empty) returns (StatusResponse) {}
   rpc DownloadMail (SpecifiedMail) returns (DownloadedMail) {}
-  rpc ExitApplication (Empty) returns (Empty) {}
+  rpc ExitApplication (Empty) returns (StatusResponse) {}
 }

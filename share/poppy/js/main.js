@@ -30,9 +30,15 @@ function set_mailbox_info(){
         $("#account-name").text(response.getAccount());
         $("#email-count").text(response.getLength());
         $("#mailbox-size").text(response.getSize());
-        sessionStorage.setItem("available-pages", Math.ceil(response.getLength() / 10).toString());
+        var availablePages = Math.ceil(response.getLength() / 10).toString();
+        $("#no-emails").css("display", "none");
+        if (availablePages == "0") {
+            availablePages = "1";
+            $("#no-emails").css("display", "");
+        }
+        sessionStorage.setItem("available-pages", availablePages);
+        $("#available-pages").text(availablePages);
     });
-    $("#available-pages").text(sessionStorage.getItem("available-pages"));
 }
 
 
@@ -72,17 +78,23 @@ function set_mail_entries(page, entries=10) {
     $("#prev-link").hide();
     $("#next-link").hide();
     $("#loading-spinner").show();
-    mailService.getMailPreviews(request, {}, (err, response) => {  
-        response.getMailPreviewList().forEach( (item, index) => {
-            if (sessionStorage.getItem("current-page") != 1) {
-                $("#prev-link").show();
-            }
-            if (sessionStorage.getItem("current-page") !== sessionStorage.getItem("available-pages")) {
-                $("#next-link").show();
-            }
+    mailService.getMailPreviews(request, {}, (err, response) => {
+        if (response.getMailPreviewList().length == 0) {
             $("#loading-spinner").hide();
-            headersMap.set(item.getUidl(), item.getHeadersMap());  
-            prepend_table(item.getUidl(), item.getMailid());
+            return;
+        }  
+        response.getMailPreviewList().forEach( (item, index) => {
+            if (item.getMailid() != 0) {
+                if (sessionStorage.getItem("current-page") != 1) {
+                    $("#prev-link").show();
+                }
+                if (sessionStorage.getItem("current-page") !== sessionStorage.getItem("available-pages")) {
+                    $("#next-link").show();
+                }
+                $("#loading-spinner").hide();
+                headersMap.set(item.getUidl(), item.getHeadersMap());  
+                prepend_table(item.getUidl(), item.getMailid());
+            }
         });   
     });
 }
@@ -127,6 +139,8 @@ function mark_mail_deleted(uidl) {
                 $("#" + hash_string(uidl)).children("td.actions").children("#delete-mail").removeClass("btn-danger");
                 $("#" + hash_string(uidl)).children("td.actions").children("#delete-mail").addClass("btn-secondary");
                 $("#" + hash_string(uidl)).css("color", "#D51B21");
+            } else {
+                alert_exit("Deletion failed, because the server crashed or had a timeout. Please check your console");
             }
         });
     }
@@ -143,6 +157,8 @@ function reset_trash(){
             sessionStorage.setItem("current-page", currentPage);
             sessionStorage.setItem("available-pages", availablePages);
             refresh_view();
+        } else {
+            alert_exit("Resetting mailbox failed, because the server crashed or had a timeout. Please check your console");
         }
     });
 }
@@ -154,6 +170,8 @@ function update_mailbox() {
         if (response.getSuccess()){
             sessionStorage.setItem("current-page", "1");
             refresh_view();
+        } else {
+            alert_exit("Updating mailbox failed, because the server crashed or had a timeout. Please check your console");
         }
     });
 }
@@ -161,6 +179,7 @@ function update_mailbox() {
 
 function download_mail(uidl) {
     var request = new SpecifiedMail();
+    request.setUidl(uidl);
     mailService.downloadMail(request, {}, (err, response) => {
         if (response.getSuccess()){
             var blob = new Blob([response.getMailcontent()], { type: "message/rfc822" });
@@ -173,17 +192,30 @@ function download_mail(uidl) {
             a.click();
             document.body.removeChild(a);
             setTimeout(function() { URL.revokeObjectURL(a.href); }, 1500);
+        } else {
+            alert_exit("Download failed, because the server crashed or had a timeout. Please check your console");
         }
     });
+}
+
+function alert_exit(message){
+    alert(message);
+    sessionStorage.setItem("app-closed", "_")
+    window.onbeforeunload = function () {};
+    $("#main-body").html("<h3>Successfully closed application. You can now safely close this tab.</h3>");
 }
 
 
 function exit_application(){
     var request = new Empty();
-    mailService.exitApplication(request, {}, (err, response) => {});
+    mailService.exitApplication(request, {}, (err, response) => {
+        if (!response.getSuccess) {
+            alert_exit("Proper exit failed, therefore your marked mails weren't deleted, because the server had crashed or had a timeout. Please check your console");
+        }
+    });
     sessionStorage.setItem("app-closed", "_")
     window.onbeforeunload = function () {};
-    $("#main-body").html("<h1>Successfully closed application. You can now safely close this window.</h1>");
+    $("#main-body").html("<h3>Successfully closed application. You can now safely close this tab.</h3>");
 }
 
 
@@ -195,7 +227,7 @@ $(function(){ // run when DOM finished rendering
         }
         refresh_view();
     } else {
-        $("#main-body").html("<h1>Successfully closed application. You can now safely close this window.</h1>");
+        $("#main-body").html("<h3>Successfully closed application. You can now safely close this tab.</h3>");
     }
 });
 

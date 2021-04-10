@@ -8,27 +8,34 @@
 #ifndef MAILSERVICE_H
 #define MAILSERVICE_H
 
-#include "mailbox.h"
 #include "poppy.pb.h"
 #include "poppy.grpc.pb.h"
-
-using namespace grpc;
+#include "mailbox.h"
 
 class MailServiceImpl final : public MailService::Service {
-private:
+  private:
     Mailbox _pop3mailbox{};
-    string _account;
+    std::string _account;
 
-public:
+  public:
     MailServiceImpl() {}
-    int ConnectMailService(string hostname, uint16_t port, string username, string password, bool encrypted);
-    Status GetMailBoxInfo(ServerContext* context, const Empty* request, MailBoxInfo* reply) override;
-    Status GetMailPreviews(ServerContext* context, const MailPreviewRequest* request, MailPreviewResponse* reply) override;
-    Status UpdateMailbox(ServerContext* context, const Empty* request, StatusResponse* reply) override;
-    Status DeleteMail(ServerContext* context, const SpecifiedMail* request, StatusResponse* reply) override;
-    Status ResetMailbox(ServerContext* context, const Empty* request, StatusResponse* reply) override;
-    Status DownloadMail(ServerContext* context, const SpecifiedMail* request, DownloadedMail* reply) override;
-    Status ExitApplication(ServerContext* context, const Empty* request, Empty* reply) override;
+    int ConnectMailService(std::string hostname, uint16_t port, 
+      std::string username, std::string password, bool encrypted);
+    grpc::Status GetMailBoxInfo(grpc::ServerContext* context, 
+      const Empty* request, MailBoxInfo* reply) override;
+    grpc::Status GetMailPreviews(grpc::ServerContext* context, 
+      const MailPreviewRequest* request, MailPreviewResponse* reply) override;
+    grpc::Status UpdateMailbox(grpc::ServerContext* context, 
+      const Empty* request, StatusResponse* reply) override;
+    grpc::Status DeleteMail(grpc::ServerContext* context, 
+      const SpecifiedMail* request, StatusResponse* reply) override;
+    grpc::Status ResetMailbox(grpc::ServerContext* context, 
+      const Empty* request, StatusResponse* reply) override;
+    grpc::Status DownloadMail(grpc::ServerContext* context, 
+      const SpecifiedMail* request, DownloadedMail* reply) override;
+    grpc::Status ExitApplication(grpc::ServerContext* context, 
+      const Empty* request, StatusResponse* reply) override;
+    void ExitMailService();
     ~MailServiceImpl() {}
 
 };

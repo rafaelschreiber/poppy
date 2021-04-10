@@ -8,11 +8,6 @@
 #ifndef GLOBALS_H
 #define GLOBALS_H
 
-#include <string>
-#include <memory>
-
-#include <spdlog/spdlog.h>
-
 // defined error codes 
 #define SUCCESS 0
 #define RESOLV_ERR 1
@@ -25,18 +20,26 @@
 #define WRONG_CREDENTIALS_ERR 8
 #define NOT_LOGGED_IN_ERR 9
 #define UIDL_NOT_FOUND_ERR 10
+#define ENVOY_UNEXPECTEDLY_QUIT_ERR 11
+#define RECONNECT_ERR 12
+#define NON_NETWORK_ERR 255 // not used as return code just internally
 
-using namespace std;
+#include <spdlog/spdlog.h>
+
+#include <string>
+#include <memory>
 
 enum Platform {
-    DARWIN,
-    LINUX,
-    ELSE
+    DARWIN = 1,
+    LINUX = 2,
+    ELSE = 3
 };
 
-extern string prefix;
+extern std::string prefix;
 extern Platform current_platform;
-extern shared_ptr<spdlog::logger> logger;
+extern std::shared_ptr<spdlog::logger> logger;
 extern bool debug;
+extern int shutdown_initiated;
+extern bool envoy_error;
 
 #endif // GLOBALS_H
