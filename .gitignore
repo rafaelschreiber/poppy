@@ -46,6 +46,8 @@ venv/
 *.aux
 *.log
 *.toc
+*.fls
+*fdb*
 _minted-main/
 
 # Compiled protobuf files

@@ -32,23 +32,23 @@ bool sigint_initiated{false};
 
 int start_envoy_proxy() {
     auto envoy_process = Popen({"envoy", "-c", 
-        prefix + "/share/poppy/envoy_poppy_proxy.yaml", "--log-path", 
-        "/tmp/envoy_poppy.log.txt"}, input{PIPE}, output{"/dev/null"});
+      prefix + "/share/poppy/envoy_poppy_proxy.yaml", "--log-path", 
+      "/tmp/envoy_poppy.log.txt"}, input{PIPE}, output{"/dev/null"});
     envoy_process_pid = envoy_process.pid();
     logger->debug("Envoy proxy started with pid: {}", envoy_process_pid);
     logger->debug("Check envoy log file after exit " 
-        "under /tmp/envoy_poppy.log.txt");
-    logger->debug("You can also access the envoy admin " 
-                    "panel under http://localhost:42963");
+      "under /tmp/envoy_poppy.log.txt");
+    logger->debug("You can also access the envoy admin panel under "
+      "http://localhost:42963");
     size_t envoy_exit_status = envoy_process.wait();
 
     if (envoy_exit_status != SUCCESS) {
         logger->warn("Envoy proxy (PID: {}) exited with status code: {}",
-            envoy_process_pid, envoy_exit_status);
+          envoy_process_pid, envoy_exit_status);
         envoy_error = true;
     } else {
         logger->debug("Envoy proxy (PID: {}) exited with status code: {}",
-            envoy_process_pid, envoy_exit_status);
+          envoy_process_pid, envoy_exit_status);
     }
     return envoy_exit_status;
 }
