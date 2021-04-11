@@ -14,6 +14,7 @@
 
 #include <grpcpp/server_builder.h>
 
+#include <fstream>
 #include <thread>
 #include <exception>
 #include <stdlib.h>
@@ -219,9 +220,9 @@ int start_grpc_server() {
         return ENVOY_UNEXPECTEDLY_QUIT_ERR; 
     }
 
-    int status = service->ConnectMailService("frontend.backend.works", 995, 
-      "mailtest", "abc123", true);
-    if (status != SUCCESS){
+    int status = service->ConnectMailService(cred.hostname, cred.port, 
+      cred.username, cred.password, cred.encrypted);
+    if (status != SUCCESS) {
         logger->error("An error occurred while starting the gRPC service");
         free(service);
         return status;

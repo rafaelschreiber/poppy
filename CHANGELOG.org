@@ -1,8 +1,12 @@
 * Changelog
-** [Unreleased]
+** [1.0]
 *** Added
 - Methods to list and retrieve metadata of all mails
 - Special data type mail_t representing a mail
+- Frontend for easy user management connecting via gRPC & protobuf
+- Bookmark store for fast connect
+- Logging and debugging system with error trace
+- Easy to use command line parameters
 
 ** [0.3] - 2021-03-16
 *** Added

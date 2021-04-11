@@ -11,7 +11,6 @@
 
 #include <string>
 #include <memory>
-#include <cstdlib>
 
 using namespace std;
 
@@ -25,8 +24,7 @@ using namespace std;
 
 string prefix = __PREFIX__; // compiler macro for installation prefix
 shared_ptr<spdlog::logger> logger = spdlog::stdout_color_mt("poppy");
-bool debug = false;
-int shutdown_initiated = 0; // indicator if shutdown procedure started
-bool envoy_error = false; // true if envoy crashes
-string config_file_path = strcat(getenv("HOME"), "/.config/poppy/poppy.conf");
-string bookmark{};
+bool debug{false};
+int shutdown_initiated{0}; // indicator if shutdown procedure started
+bool envoy_error{false}; // true if envoy crashes
+cred_t cred{};

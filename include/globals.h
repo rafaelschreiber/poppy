@@ -22,12 +22,21 @@
 #define UIDL_NOT_FOUND_ERR 10
 #define ENVOY_UNEXPECTEDLY_QUIT_ERR 11
 #define RECONNECT_ERR 12
+#define TOML_PARSE_ERROR 13
 #define NON_NETWORK_ERR 255 // not used as return code just internally
 
 #include <spdlog/spdlog.h>
 
 #include <string>
 #include <memory>
+
+struct cred_t {
+  std::string hostname;
+  uint16_t port;
+  std::string username;
+  std::string password;
+  bool encrypted;
+};
 
 enum Platform {
     DARWIN = 1,
@@ -41,7 +50,6 @@ extern std::shared_ptr<spdlog::logger> logger;
 extern bool debug;
 extern int shutdown_initiated;
 extern bool envoy_error;
-extern std::string config_file_path;
-extern std::string bookmark;
+extern cred_t cred;
 
 #endif // GLOBALS_H

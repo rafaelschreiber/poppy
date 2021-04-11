@@ -11,13 +11,17 @@
 #include <spdlog/spdlog.h>
 #include <CLI11.hpp>
 #include <subprocess.hpp>
+#include <toml.hpp>
 
+#include <string>
+#include <cstdlib>
 #include <thread>
 #include <future>
 #include <vector>
 #include <chrono>
 #include <csignal>
 #include <signal.h>
+#include <pwd.h>
 #include <unistd.h>
 
 using namespace std;
@@ -109,7 +113,54 @@ void signal_handler(int signum) {
 }
 
 
+int get_bookmark_credentials(string config_file_path, string bookmark) {
+    toml::table config;
+    try {
+        config = toml::parse_file(config_file_path);
+    } catch (const toml::parse_error& err) {
+        logger->critical("Failed parsing config file located at: {}", 
+          config_file_path);
+        return TOML_PARSE_ERROR;
+    }
+
+    auto bookmark_info = config[bookmark];
+    if (!bookmark_info) {
+        logger->critical("Bookmark '{}' doesn't exist in config file {}", 
+        bookmark, config_file_path);
+        return TOML_PARSE_ERROR;
+    }
+    string host = (string) bookmark_info["host"].value_or("");
+    uint16_t port = (uint16_t) bookmark_info["port"].value_or(995);
+    string user = (string) bookmark_info["user"].value_or("");
+    string pass = (string) bookmark_info["pass"].value_or("");
+    bool ssl = (bool) bookmark_info["ssl"].value_or(true);
+
+    if (host.length() == 0 || user.length() == 0) {
+        logger->critical("The keys 'host' and 'user' in: bookmark '{}' in file "
+          "{} are mandatory", bookmark, config_file_path);
+        return TOML_PARSE_ERROR;  
+    }
+
+    if (pass.length() == 0) {
+        string promttext = "Enter password for " + user + ": ";
+        pass = getpass(promttext.c_str());
+    }
+
+    cred.hostname = host;
+    cred.port = port;
+    cred.username = user;
+    cred.password = pass;
+    cred.encrypted = ssl;
+    
+    return SUCCESS;
+}
+
+
 int main(int argc, char** argv) {
+    string config_file_path{strcat(getenv("HOME"), 
+      "/.config/poppy/poppy.conf")};
+    string bookmark{};
+
     CLI::App app{"POPpy a simple pop3 client with a minimalistic frontend"};
     
     app.add_option("bookmark", bookmark, "Specify POP3 bookmark")
@@ -124,6 +175,12 @@ int main(int argc, char** argv) {
     if (debug) { 
         logger->set_level(spdlog::level::debug);
         logger->info("Debug is enabled and prefix={}", prefix);
+    }
+
+    int cred_status = get_bookmark_credentials(config_file_path, bookmark);
+    if (cred_status != SUCCESS) {
+        logger->info("Terminating with exit code {} (ERROR)", cred_status);
+        return cred_status;
     }
 
     signal(SIGTERM, signal_handler);
