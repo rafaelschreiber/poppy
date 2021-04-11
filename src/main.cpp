@@ -9,7 +9,7 @@
 #include "mailservice.h"
 
 #include <spdlog/spdlog.h>
-#include "CLI11.hpp"
+#include <CLI11.hpp>
 #include <subprocess.hpp>
 
 #include <thread>
@@ -112,7 +112,7 @@ void signal_handler(int signum) {
 int main(int argc, char** argv) {
     CLI::App app{"POPpy a simple pop3 client with a minimalistic frontend"};
     
-    app.add_option("connection", bookmark, "Specify POP3 bookmark")
+    app.add_option("bookmark", bookmark, "Specify POP3 bookmark")
       ->required();
     app.add_option("-c,--config", config_file_path, "Path to your config file")
       ->check(CLI::ExistingFile);

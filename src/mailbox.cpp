@@ -68,6 +68,7 @@ int Mailbox::update_maillist(bool first_connect) {
     }
 
     // calculate mailbox storage size
+    _mailbox_size = 0;
     for (size_t i = 0; i < _mail_list.size(); i++) {
         mail_t new_mail = _mail_list.at(i);
         _mailbox_size += new_mail.size();

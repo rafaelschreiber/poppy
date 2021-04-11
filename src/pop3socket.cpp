@@ -366,13 +366,15 @@ inline bool ends_with(std::string const & value, std::string const & ending) {
 
 
 string Pop3socket::_recv(bool islong) {
+    string recv;
     unique_lock<mutex> recv_lck(recv_mtx);
     if (islong) {
-        return _recv_long(); // usually for multiple line responses
+        recv = _recv_long(); // usually for multiple line responses
     } else {
-        return _recv_short(); // usually for one line responses
+        recv = _recv_short(); // usually for one line responses
     }
     recv_lck.unlock();
+    return recv;
 }
 
 
