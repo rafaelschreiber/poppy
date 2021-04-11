@@ -41,5 +41,7 @@ extern std::shared_ptr<spdlog::logger> logger;
 extern bool debug;
 extern int shutdown_initiated;
 extern bool envoy_error;
+extern std::string config_file_path;
+extern std::string bookmark;
 
 #endif // GLOBALS_H
