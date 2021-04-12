@@ -27,13 +27,22 @@
 using namespace std;
 using namespace subprocess;
 
-pid_t envoy_process_pid{0};
+pid_t envoy_process_pid{255};
 bool sigint_initiated{false};
 
 int start_envoy_proxy() {
-    auto envoy_process = Popen({"envoy", "-c", 
-      prefix + "/share/poppy/envoy_poppy_proxy.yaml", "--log-path", 
-      "/tmp/envoy_poppy.log.txt"}, input{PIPE}, output{"/dev/null"});
+    Popen envoy_process = Popen({"envoy", "-c", prefix +
+      "/share/poppy/envoy_poppy_proxy.yaml", "--log-path",
+      "/tmp/envoy_poppy.log.txt"}, input{PIPE}, output{"/dev/null"},
+      defer_spawn{true});
+    try {
+        envoy_process.start_process();
+    } catch (...) {
+        logger->error("Failed to start envoy. Maybe the binary isn't "
+          "in $PATH");
+        envoy_error = true;
+        return ENVOY_UNEXPECTEDLY_QUIT_ERR;
+    }
     envoy_process_pid = envoy_process.pid();
     logger->debug("Envoy proxy started with pid: {}", envoy_process_pid);
     logger->debug("Check envoy log file after exit " 
@@ -43,7 +52,7 @@ int start_envoy_proxy() {
     size_t envoy_exit_status = envoy_process.wait();
 
     if (envoy_exit_status != SUCCESS) {
-        logger->warn("Envoy proxy (PID: {}) exited with status code: {}",
+        logger->warn("Envoy proxy (PID: {}) exited with error code: {}",
           envoy_process_pid, envoy_exit_status);
         envoy_error = true;
     } else {
