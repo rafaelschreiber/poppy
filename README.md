@@ -41,7 +41,7 @@ $ git clone https://github.com/rafaelschreiber/schreiber_project_2
 $ cd schreiber_project_2/build
 $ meson --prefix $PWD/.. .. # if an installation will be performed specify your wished installation path
 $ ninja
-$ meson install // only if an installation is wished
+$ meson install // only if an installation is wished. Fails if higher permissions are requiered (sudo)
 $ ./poppy bookmarkname
 ```
 
