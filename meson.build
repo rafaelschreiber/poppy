@@ -1,6 +1,6 @@
-project('pop3client_29', 'cpp',
+project('POPpy', 'cpp',
         license : ['Boost'],
-        version : '0.4',
+        version : '1.0',
         default_options : ['cpp_std=c++17', 'warning_level=3', 'werror=false'])
 
 # check program dependencies

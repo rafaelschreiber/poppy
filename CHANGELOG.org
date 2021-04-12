@@ -7,6 +7,8 @@
 - Bookmark store for fast connect
 - Logging and debugging system with error trace
 - Easy to use command line parameters
+- Finished documentation
+- New README.md
 
 ** [0.3] - 2021-03-16
 *** Added
