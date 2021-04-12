@@ -3,7 +3,7 @@
 
 ![](https://www.rafaelschreiber.dev/poppy_logo.png)
 
-## Usage
+## Usage 👨‍💻
 ```sh
 $ poppy [OPTIONS] bookmark
 
@@ -33,7 +33,7 @@ Options:
 - [spdlog](https://github.com/gabime/spdlog)
 - [toml++](https://github.com/marzer/tomlplusplus)
 
-## Compilation
+## Compilation ⚙️
 
 **Note: Location of header-only libs must be included in meson-options.txt**
 ```sh
@@ -49,5 +49,5 @@ Compilation was tested on the following platforms:
 - macOS Big Sur (Apple clang version 12.0.0)
 - Ubuntu 20.04 LTS (gcc version 9.3.0)
 
-## Documenation
+## Documenation 📄
 A documentation is available but only in [german](https://github.com/rafaelschreiber/schreiber_project_2/blob/master/doc/main.pdf).
