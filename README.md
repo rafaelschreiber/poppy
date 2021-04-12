@@ -1,7 +1,7 @@
 ## POPpy 
 ### A minimalistic POP3 client 📫
 
-![poppy-logo](https://www.rafaelschreiber.dev/poppy_logo.png =20x200)
+![poppy-logo](https://www.rafaelschreiber.dev/poppy_logo.png =200x200)
 
 ## Usage
 ```sh
