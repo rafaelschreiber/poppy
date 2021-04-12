@@ -29,9 +29,9 @@
 \pagenumbering{gobble}
 \clearpage
 \thispagestyle{empty}
-\author{Rafael Schreiber (5BHIF/KatNr.20)}
+\author{Rafael Schreiber (5BHIF/KatNr. 20)}
 \date{April 2021}
-\title{POPpy \\ Ein minimalistischer POP3 Client}
+\title{POPpy \\ Ein minimalistischer POP3 Client \\ Aufgabe Nr. 29}
 \maketitle
 \begin{figure}[htbp]
     \centering
@@ -113,7 +113,7 @@ und sicherer ist aber keine Abwärtskompatibilität zu HTTP/1.1 bietet.
 Dabei ist protobuf \cite{protobuf}, ebenfalls von Google entwickelt, für die 
 Strukturierung der Daten verantwortlich. Deshalb ist protobuf ein integraler 
 bestandteil von gRPC. Protobuf serialisiert strukturierte Daten anders wie JSON 
-nicht text-basiert, sonder binär. Das reduziert die Nachrichtengröße und senkt 
+nicht text-basiert, sonder binär. Das reduziert die Nachrichtengröße, senkt 
 dadurch auch den Traffic und steigert somit die Geschwindigkeit.
 
 \paragraph{Probleme mit gRPC im Web:}
@@ -137,7 +137,7 @@ empfiehlt auf ihrer Website zu gRPC-Web den Envoy Proxy \cite{envoy}.
 \subsubsection{Frontend}
 Das Frontend ist in JavaScript programmiert und wurde in einem npm Projekt
 angelegt. Der Paketmanager npm eignet sich gut dafür, weil das Frontend mehrere
-Bibliotheken benötigt darunter das wichtigste \code{grpc-web}. Außerdem müssen
+Bibliotheken benötigt darunter das wichtigste \code{grpc-web}. Dazu müssen
 die vom protobuf- und gRPC-Compiler generierten Dateien im Frontend eingebunden
 werden. Außerdem bietet webpack \cite{webpack} eine praktische Lösung alle 
 Abhängigkeiten und Module in eine statische "`minified"' .js Datei 
@@ -147,12 +147,12 @@ zusammenzufassen welche dann einfach im HTML Dokument eingebunden wird.
 Das Backend wurde in C++17 programmiert und bietet jeweils eine gRPC 
 Schnittstelle für die Kommunikation mit dem Frontend und eine eigens
 Programmierte API für den Datenaustausch mit dem POP3 Server Schnittstelle für 
-die Kommunkation. Die Mailbox Klasse ist dafür zuständig, E-Mail während der
+die Kommunkation. Die Mailbox Klasse ist dafür zuständig, E-Mails während der
 Laufzeit zu cachen, Verbindungen zu verwalten und eine einfache Repräsenatation
 auf die E-Mails zu bieten.
 
 \subsubsection{Envoy}
-Envoy ist ein proxy server entwickelt von den Programmieren bei Lyft. Google 
+Envoy ist ein Proxy Server entwickelt von den Programmieren bei Lyft. Google 
 selbst empfiehlt die Nutzung von Envoy bei gRPC-Web Applikationen. Envoy wird 
 automatisch mit der richtigen Konfiguration vom Backend gestartet und 
 verwaltet. Wenn Envoy abstürzt, dann schließt sich auch automatisch das 
@@ -170,7 +170,7 @@ Backend. Der Endanwender muss sich dabei um nichts kümmern.
 POPpy wird über die Kommandozeile gestartet. Beim Start muss der Name eines
 Bookmarks angegeben werden. Ein Bookmark gibt dabei Zugangsdaten zu einem POP3 
 Server an. Bookmarks werden standardmäßig von der Datei 
-\code{~/.config/poppy/poppy.conf} gelesen. Alternativ kann auch eine andere 
+\code{\textasciitilde /.config/poppy/poppy.conf} gelesen. Alternativ kann auch eine andere 
 Datei angegeben werden. Diese TOML Datei ist folgendermaßen aufgabaut.
 \begin{minted}{toml}
     # POPpy config file
@@ -186,7 +186,7 @@ Datei angegeben werden. Diese TOML Datei ist folgendermaßen aufgabaut.
 Wenn kein Passwort gespeichert wird, was auch Empfohlen ist, dann fragt POPpy
 automatisch noch vor dem Start des Frontends nach dem Passwort. Wenn die Felder
 \code{port} oder \code{ssl} nicht angegeben werden dann werden sie automatisch
-auf 995 und true ergänzt. 
+auf 995 und true gesetzt. 
 \newline
 \newline
 Beim Start werden zwei Threads gestartet. Diese werden mittels \code{async}
@@ -194,7 +194,7 @@ Aufruf als \code{future} in einem \code{vector<future<int>*>} gespeichert.
 Diese Futures liefern als Integer einen Statuscode zurück. Diese Statuscodes
 sind in der Datei \code{include/globals.h} gespeichert.
 \newline
-Der erste Thread startet und verwaltet den Envoy Proxy. Zum starten wird die
+Der erste Thread startet und verwaltet den Envoy Proxy. Zum Starten wird die
 Bibliothek \code{cpp-subprocess} verwendet. Die Funktion hinter diesem Thread 
 sieht folgendermaßen aus:
 \begin{minted}{c++}
@@ -258,12 +258,12 @@ int start_grpc_server() {
 \end{minted}
 Die Variablen \code{cred} und \code{service} sind dabei globale Variablen.
 Davon ist \code{service} ein Pointer zum gRPC Service und \code{cred} ein 
-Objekt vom Typ \code{cred\textunderscore t}, welches vom Bookmark Parser mit den 
-Zugangsdaten befüllt wird.
+Objekt vom Typ \code{cred\textunderscore t}, welches vom Bookmark Parser mit 
+den Zugangsdaten befüllt wird.
 \newline
 Die Methode \code{ConnectMailService} startet die Mailbox, welche dann im
 Endeffekt mithilfe von Pop3socket die POP3 Sitzung startet. Wenn die Sitzung 
-gestartet ist hört der gRPC Dienst nach eingehenden RPC.
+gestartet ist hört der gRPC Dienst nach eingehenden RPCs.
 
 \subsubsection{Laufzeit}
 Der gRPC Service nimmt eingehende Verbindungen und RPCs an und bearbeitet sie.
@@ -353,13 +353,13 @@ Während sich der gRPC Server beendet, wird auch der Envoy Proxy mittels
 
 \section{Verwendung}
 \subsection{Abhängigkeiten}
-Zuerst müssen folgende Programme installiert sein oder zumindest in \code{\$PATH}
-vorhanden sein. Meson überprüft vor dem kompilieren, ob diese vorhanden sind,
-wenn das nicht der Fall ist, dann wird bei einem Fehler der Link zum Download 
-ausgegeben.
+Zuerst müssen folgende Programme installiert sein oder zumindest in 
+\code{\$PATH} vorhanden sein. Meson überprüft vor dem kompilieren, ob diese 
+vorhanden sind, wenn das nicht der Fall ist, dann wird bei einem Fehler der 
+Link zum Download ausgegeben.
 \begin{itemize}
-    \item The Meson Build System \cite{meson}
     \item Einen C++ Compiler
+    \item The Meson Build System \cite{meson}
     \item protobuf \cite{protobuf}
     \item gRPC mit protoc-gen-grpc-web \cite{protoc-gen-grpc-web}
     \item Envoy Proxy \cite{envoy}
@@ -375,17 +375,63 @@ Dazu kommen noch ein paar Header-Only Bibliotheken, dessen Elternpfade in der
 Datei \code{meson\textunderscore options.txt} angegeben werden:
 \begin{itemize}
     \item CLI11 \cite{cli11}
-    \item cpp\_subprocess \cite{cpp-subprocess}
+    \item cpp-subprocess \cite{cpp-subprocess}
     \item spdlog \cite{spdlog}
     \item toml++ \cite{toml}
 \end{itemize}
 
 \subsection{Komplilierung}
-Zuerst wechselt man in den Ordner \code{build/}
-\begin{minted}{c++}
+Zuerst wechselt man in den Ordner \code{build/}, dieser sollte zu beginn leer
+sein. Danach kann Meson mit folgendem Befehl gestartet werden:
+\begin{minted}{shell}
+    $ meson --prefix $PWD/.. ..
+    # Falls das Programm danach auch installiert werden soll, dann 
+    # sollte bei --prefix der gewünschte Installationspfad angegeben 
+    # werden. Zum Beispiel /usr/local
 \end{minted}
+Währenddessen überprüft Meson, ob auch alle Abhängigkeiten installiert sind.
+Eine Ausnahme dabei ist GNU Mailutils. Außerdem werden auch alle protobuf und
+gRPC Dateien generiert und das Frontend via npm kompiliert. Dieser Befehl
+könnte deshalb ein wenig länger dauern. \newline
+Zum kompilieren danach folgenden Befehl ausführen
+\begin{minted}{shell}
+    $ ninja
+\end{minted}
+Falls gewünscht kann das Programm danach auch installiert werden:
+\begin{minted}{shell}
+    $ meson install
+\end{minted}
+Die Kompilierung wurde auf folgenden Plattformen getestet:
+\begin{itemize}
+    \item macOS Big Sur (Apple clang version 12.0.0)
+    \item Ubuntu 20.04 LTS (gcc version 9.3.0)
+\end{itemize}
+Beide Plattformen basieren auf einen Prozessor mit x86 Befehlssatz.
 
+\subsection{Benutzung}
+Vor dem ersten Start muss die Datei 
+\code{\textasciitilde /.config/poppy/poppy.conf} bearbeitet werden. Dort 
+einfach ein Bookmark mit den Anmeldedaten definieren und speichern. 
+\newline
+\newline
+\textbf{Achtung! Falls POPpy nicht installiert wurde, muss die Datei 
+manuell erstellt werden. Eine Beispielkonfiguration ist unter 
+\code{poppy\textunderscore sample.conf}.}
 
+\subsubsection{Kommandozeilenparameter}
+\paragraph{bookmark TEXT REQUIRED:}
+Gibt den Namen des Bookmarks an zu welchem eine POP3 Sitzung hergestellt werden 
+soll.
+
+\paragraph{-c,--config TEXT:FILE OPTIONAL:}
+Falls nicht die Standard Konfigurationsdatei unter 
+\code{poppy\textunderscore sample.conf} verwendet werden soll, kann mit diesem
+Parameter eine alternative Datei angegeben werden.
+
+\paragraph{-d,--debug:}
+Wenn dieser Flag gesetzt ist, wird POPpy im Debug Modus gestartet. Dieser Modus
+bietet mehr Transparenz über die Abläufe im Programm und ist hilfreich bei
+Fehlern.
 
 \begin{thebibliography}{25}
 \bibitem{gnutls} 
@@ -429,7 +475,7 @@ webpack
 \\\textit{https://webpack.js.org}
 
 \bibitem{protoc-gen-grpc-web}
-webpack
+protoc-gen-grpc-web
 \\\textit{https://github.com/grpc/grpc-web/releases}
 
 \bibitem{meson} 
@@ -438,7 +484,7 @@ The Meson Build System: Project Website
 
 \bibitem{mailutils} 
 GNU Mailutils: General-Purpose Mail Package
-\\\texttt{https://mailutils.org/}
+\\\texttt{https://mailutils.org}
 
 \bibitem{cli11} 
 GitHub: CLIUtils/CLI11 command line parser
